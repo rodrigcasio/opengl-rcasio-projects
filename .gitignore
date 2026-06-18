@@ -1,1 +1,7 @@
-/build
+# build folders (ignore them anywhere in the project)
+**/build/
+build/
+
+# autocomplete shortcut maps
+**/compile_commands.json
+compile_commands.json
