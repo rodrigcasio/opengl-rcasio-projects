@@ -2,7 +2,7 @@
 cmake_minimum_required(VERSION 3.15)
 
 # 2. Declare the name of this project module and the language used (c++)
-project(CreatingAWindow Version 1.0 LANGUAGES CXX)
+project(CreatingAWindow VERSION 1.0 LANGUAGES CXX)
 
 # 3. Mandate C++17 rules for compiler
 set(CMAKE_CXX_STANDARD 17)
@@ -19,7 +19,7 @@ find_package(glfw 3.3 REQUIRED)
 add_executable(opengl_window src/main.cpp)
 
 # 7 Use the target linker to glue GLFW and OpenGL code objects directly into my binary
-get_link_libraries(opengl_window
+target_link_libraries(opengl_window
   PRIVATE
       glfw
       OpenGL::GL
