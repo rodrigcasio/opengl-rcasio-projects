@@ -13,7 +13,7 @@ set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 # 5 Ask CMake to scan my Arch Linux System for packages paths
 find_package(OpenGL REQUIRED)
-find_package(glfw 3.3 REQUIRED)
+find_package(glfw3 REQUIRED)
 
 # 6 Define our binary executable app target name and point to its source files
 add_executable(opengl_window src/main.cpp)
