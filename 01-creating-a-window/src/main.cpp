@@ -25,9 +25,9 @@ int main() {
     std::cout << "Failed to initialize GLAD" << std::endl;
     return -1;
   }
-
   
-
+  glViewport(0, 0, 800, 600);
+  
   glfwMakeContextCurrent(window);
   
   return 0;
