@@ -4,6 +4,11 @@
 //clang-format on 
 #include <iostream>
 
+void framebuffer_size_callback(GLFWwindow* window, int width, int height);
+
+const unsigned int SCR_WIDTH = 800;
+const unsigned int SCR_HEIGHT = 600;
+
 int main() {
   
   // instatiate the GLFW window
@@ -14,20 +19,21 @@ int main() {
   glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
   // glfwWindowHint(GLFW_OPENGL_FORWARD_COMBAT, GL_TRUE);
 
-  GLFWwindow* window = glfwCreateWindow(800, 600, "LearnOpenGL", NULL, NULL);
+  GLFWwindow* window = glfwCreateWindow(SCR_WIDTH, SCR_HEIGHT, "LearnOpenGL", NULL, NULL);
   if (window == NULL) {
     std::cout << "Failed to create GLFW window" << std::endl;
     glfwTerminate();
     return -1;
   }
-  
+ 
+  glfwMakeContextCurrent(window);
+  glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
+
   if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress)) {
     std::cout << "Failed to initialize GLAD" << std::endl;
     return -1;
   }
-  
-  // glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
-  glfwMakeContextCurrent(window);
+ 
 
   while (!glfwWindowShouldClose(window)) {
     glfwSwapBuffers(window);
@@ -35,11 +41,9 @@ int main() {
   }
 
   glfwTerminate();
-  
+
   return 0;
 }
-
-
 
 void framebuffer_size_callback(GLFWwindow* window, int width, int height) {
   glViewport(0, 0, width, height);
