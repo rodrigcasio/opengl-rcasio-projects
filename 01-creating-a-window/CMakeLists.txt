@@ -2,30 +2,31 @@
 cmake_minimum_required(VERSION 3.15)
 
 # 2. Declare the name of this project module and the language used (c++)
-project(CreatingAWindow VERSION 1.0 LANGUAGES CXX)
+project(CreatingAWindow VERSION 1.0 LANGUAGES CXX C)
 
-# 3. Mandate C++17 rules for compiler
+# Mandate C++17 rules for compiler
 set(CMAKE_CXX_STANDARD 17)
-set(CMAKE_CXX_STANDARD_REQUIRED ON)
-
-# 4. Export database paths so LazyVim (clang LSP) can automate my graphics libraries
+# Export database paths so LazyVim (clang LSP) can automate my graphics libraries
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
-# 5 Ask CMake to scan my Arch Linux System for packages paths
-find_package(OpenGL REQUIRED)
+# 1. Tell CMake where to look for our local glad.h file
+include_directories(include)
+
+# 2 Find GLFW and system threads
 find_package(glfw3 REQUIRED)
+find_package(Threads REQUIRED)
 
-# 6 Define our binary executable app target name and point to its source files
-add_executable(opengl_window src/main.cpp)
-
-# 7 Use the target linker to glue GLFW and OpenGL code objects directly into my binary
-target_link_libraries(opengl_window
-  PRIVATE
-      glfw
-      OpenGL::GL
+# 3 Add BOTH main.cpp AND glad.c to our executable build list
+add_executable(opengl-exe 
+  src/main.cpp
+  src/glad.c
 )
 
+# 4 link out system graphics/thread libraries
+target_link_libraries(opengl-exe PRIVATE 
+  glfw
+  Threads::Threads
+  dl
+)
 
-
-
-
+# Updated for adding GLAD for first project
