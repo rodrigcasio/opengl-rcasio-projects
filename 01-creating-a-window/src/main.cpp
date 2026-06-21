@@ -35,10 +35,12 @@ int main() {
     return -1;
   }
  
-
+  // Render Loop
   while (!glfwWindowShouldClose(window)) {
     processInput(window);
 
+    glClearColor(0.2f, 0.3f, 0.3f, 1.0f);   // state-setting func.
+    glClear(GL_COLOR_BUFFER_BIT);   // state-using func.
 
     glfwSwapBuffers(window);
     glfwPollEvents();
@@ -48,6 +50,8 @@ int main() {
 
   return 0;
 }
+
+
 
 void framebuffer_size_callback(GLFWwindow* window, int width, int height) {
   glViewport(0, 0, width, height);
