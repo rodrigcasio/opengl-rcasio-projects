@@ -9,7 +9,7 @@ set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 include_directories(include)
 
 find_package(glfw3 REQUIRED)
-find_package(Thread REQUIRED)
+find_package(Threads REQUIRED)
 
 add_executable(opengl-exe
   src/main.cpp
