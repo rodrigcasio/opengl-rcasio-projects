@@ -16,7 +16,7 @@ add_executable(opengl-exe
   src/glad.c
 )
 
-target_link_libraries(opengl-exe, PRIVATE
+target_link_libraries(opengl-exe PRIVATE
   glfw
   Threads::Threads
   dl
