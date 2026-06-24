@@ -3,6 +3,7 @@
 #include <GLFW/glfw3.h>
 // clang-format on
 #include <iostream>
+// chapter hello triangle
 
 void framebuffer_size_callback(GLFWwindow* window, int width, int height);
 void processInput(GLFWwindow* window);
@@ -36,7 +37,9 @@ int main () {
 
   while (!glfwWindowShouldClose(window)) {
     processInput(window);
-    
+
+    glClearColor(0.2f, 0.3f, 0.3, 1.0f);
+    glClear(GL_COLOR_BUFFER_BIT);
     
     glfwSwapBuffers(window);
     glfwPollEvents();
