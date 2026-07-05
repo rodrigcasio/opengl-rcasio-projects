@@ -44,12 +44,14 @@ int main () {
   // Stored vertex data(vertices) within memory on the graphics card as 
   // managed by the vertex buffer object VBO.
   unsigned int VBO;
+
   glGenBuffers(1, &VBO);  // assign buffer ID: 1 to VBO
   glBindBuffer(GL_ARRAY_BUFFER, VBO); // assign correct buffer type (GL_ARRAY_BUFFER) for VBO
+
   // copies the previously defined vertex data into the buffer's memory
   glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
-  
-  
+ 
+
 
 
   // reder loop
