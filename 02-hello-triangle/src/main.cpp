@@ -3,21 +3,19 @@
 #include <GLFW/glfw3.h>
 // clang-format on
 #include <iostream>
+#include <string>
+#include <fstream>
+#include <sstream>
 #include <ostream>
 // chapter hello triangle
 
 void framebuffer_size_callback(GLFWwindow* window, int width, int height);
 void processInput(GLFWwindow* window);
+std::string loadSharedSource(const std::string& filePath);
 
 const unsigned int SRC_WIDTH = 800;
 const unsigned int SRC_HEIGHT = 600;
 
-const char* vertexShaderSource = "#version 330 core\n"
-  "layout (location = 0) in vec3 aPos;\n"
-  "void main()\n"
-  "{\n "
-  " gl_Position = vec4(aPos.x, aPos.y, aPos.z, 1.0); \n"
-  "}\0";
 
 int main () {
   
@@ -57,26 +55,55 @@ int main () {
   glBindBuffer(GL_ARRAY_BUFFER, VBO);
   glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
 // --
-  
+ 
+
+//---------------------
 // -- creating vertexShader
+  const char* vertexShaderSource = "#version 330 core\n"
+    "layout (location = 0) in vec3 aPos;\n"
+    "void main()\n"
+    "{\n "
+    " gl_Position = vec4(aPos.x, aPos.y, aPos.z, 1.0); \n"
+    "}\0";
+
   unsigned int vertexShader; // shader object
   vertexShader = glCreateShader(GL_VERTEX_SHADER); // type of shader: GL_VERTEX_SHADER
-  glad_glShaderSource(vertexShader, 1, &vertexShaderSource, NULL);
-  glad_glCompileShader(vertexShader);
-//-
+  glShaderSource(vertexShader, 1, &vertexShaderSource, NULL);
+  glCompileShader(vertexShader);
  
-//---
-  //-- safe check if compilation was sucessfull when `glad_glCompileShader()` called
+  //- safe check if compilation was sucessfull when `glCompileShader()` called
   int success;
   char infoLogs[512];
-  glad_glGetShaderiv(vertexShader, GL_COMPILE_STATUS, &success);
+  glGetShaderiv(vertexShader, GL_COMPILE_STATUS, &success);
 
   if (!success) {
-    glad_glGetShaderInfoLog(vertexShader, 512, NULL, infoLogs);
+    glGetShaderInfoLog(vertexShader, 512, NULL, infoLogs);
     std::cout << "ERROR:SHADER::VERTEX::COMPILATION_FAILED\n" << infoLogs << std::endl;
   }
-//--
+//-------------
   
+// ------------
+//-- creating fragmentShader object with function loadSharedSource
+  std::string fragmentShaderStr = loadSharedSource("fragment-shader.glsl");
+  const char* fragmentShaderSource = fragmentShaderStr.c_str();
+  
+  unsigned int fragmentShader;
+  fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
+  glShaderSource(fragmentShader, 1, &fragmentShaderSource, NULL);
+  glCompileShader(fragmentShader);
+  
+  //- safecheck if compilation was successful when glCompileShader() called for fragment shader
+  int sucessFragmentShader;
+  char infoLogs_fr[512];
+  glGetShaderiv(fragmentShader, GL_COMPILE_STATUS, &sucessFragmentShader);
+  
+  if (!sucessFragmentShader) {
+    glGetShaderInfoLog(fragmentShader, 512, NULL, infoLogs_fr);
+    std::cout << "ERROR::SHADER::FRAGMENT::COMPILATION_FAILED\n" << infoLogs_fr << std::endl;
+  }
+// -------------
+
+
   // reder loop
   while (!glfwWindowShouldClose(window)) {
     processInput(window);
@@ -104,3 +131,15 @@ void processInput(GLFWwindow* window) {
     glfwSetWindowShouldClose(window, 1); // true can be used.
   }
 }
+
+std::string loadSharedSource(const std::string& filePath) {
+  std::ifstream shaderFile(filePath);
+  if (!shaderFile.is_open()) {
+    std::cerr << "ERROR: Could not open shared file: " << filePath << std::endl;
+  }
+
+  std::stringstream shaderStream;
+  shaderStream << shaderFile.rdbuf(); // read file buffer into stream
+  return shaderStream.str(); // convert stream to string
+}
+
