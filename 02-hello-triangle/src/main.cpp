@@ -71,7 +71,7 @@ int main () {
   glCompileShader(vertexShader);
  
   //- safe check if compilation was sucessfull when `glCompileShader()` called
-  int success;
+  int success;  // can be used for each safe check in vertex, fragment or program shader
   char infoLogs[512];
   glGetShaderiv(vertexShader, GL_COMPILE_STATUS, &success);
 
@@ -105,6 +105,22 @@ int main () {
 
   //--------------
   //-- Shader program
+  unsigned int shaderProgram;
+  shaderProgram = glCreateProgram();
+
+  glAttachShader(shaderProgram, vertexShader);
+  glAttachShader(shaderProgram, fragmentShader);
+  glLinkProgram(shaderProgram);
+
+  // -- safe check if linking a shader program failed 
+  // During linking step(each output is matched to each input of the shaders and whenever something is not right, linking fails) 
+  glGetProgramiv(shaderProgram, GL_LINK_STATUS, &success);
+  if (!success) {
+    glGetProgramInfoLog(shaderProgram, 512, NULL, infoLogs);
+  }
+
+  //--------------
+
 
   // reder loop
   while (!glfwWindowShouldClose(window)) {
