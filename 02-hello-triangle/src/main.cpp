@@ -11,7 +11,7 @@
 
 void framebuffer_size_callback(GLFWwindow* window, int width, int height);
 void processInput(GLFWwindow* window);
-std::string loadSharedSource(const std::string& filePath);
+std::string loadShaderSource(const std::string& filePath);
 
 const unsigned int SRC_WIDTH = 800;
 const unsigned int SRC_HEIGHT = 600;
@@ -56,7 +56,6 @@ int main () {
   glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
 // --
  
-
 //---------------------
 // -- creating vertexShader
   const char* vertexShaderSource = "#version 330 core\n"
@@ -84,7 +83,7 @@ int main () {
   
 // ------------
 //-- creating fragmentShader object with function loadSharedSource
-  std::string fragmentShaderStr = loadSharedSource("fragment-shader.glsl");
+  std::string fragmentShaderStr = loadShaderSource("fragment-shader.glsl");
   const char* fragmentShaderSource = fragmentShaderStr.c_str();
   
   unsigned int fragmentShader;
@@ -103,6 +102,8 @@ int main () {
   }
 // -------------
 
+//--------------
+//-- Shader program
 
   // reder loop
   while (!glfwWindowShouldClose(window)) {
@@ -132,7 +133,7 @@ void processInput(GLFWwindow* window) {
   }
 }
 
-std::string loadSharedSource(const std::string& filePath) {
+std::string loadShaderSource(const std::string& filePath) {
   std::ifstream shaderFile(filePath);
   if (!shaderFile.is_open()) {
     std::cerr << "ERROR: Could not open shared file: " << filePath << std::endl;
