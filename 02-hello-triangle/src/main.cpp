@@ -118,6 +118,13 @@ int main () {
   if (!success) {
     glGetProgramInfoLog(shaderProgram, 512, NULL, infoLogs);
   }
+  
+  glUseProgram(shaderProgram);
+  
+  // delete shader objects (vertex & fragment shader) after linked them into a program object (shaderProgram)
+  glDeleteShader(vertexShader);
+  glDeleteShader(fragmentShader);
+  
 
   //--------------
 
