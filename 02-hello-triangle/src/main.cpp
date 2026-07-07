@@ -49,23 +49,23 @@ int main () {
     0.0f, 0.5f, 0.0f  // (0.0, 0.5 0.0)
   };
   
-  // --
+// --
   // Stored vertex data(vertices) within memory on the graphics card as 
   // managed by the vertex buffer object VBO.
   unsigned int VBO;
   glGenBuffers(1, &VBO);
   glBindBuffer(GL_ARRAY_BUFFER, VBO);
   glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
-  // --
+// --
   
-  // -- creating vertexShader
+// -- creating vertexShader
   unsigned int vertexShader; // shader object
   vertexShader = glCreateShader(GL_VERTEX_SHADER); // type of shader: GL_VERTEX_SHADER
   glad_glShaderSource(vertexShader, 1, &vertexShaderSource, NULL);
   glad_glCompileShader(vertexShader);
-  //---
-  
-  //---
+//-
+ 
+//---
   //-- safe check if compilation was sucessfull when `glad_glCompileShader()` called
   int success;
   char infoLogs[512];
@@ -75,7 +75,7 @@ int main () {
     glad_glGetShaderInfoLog(vertexShader, 512, NULL, infoLogs);
     std::cout << "ERROR:SHADER::VERTEX::COMPILATION_FAILED\n" << infoLogs << std::endl;
   }
-  //--
+//--
   
   // reder loop
   while (!glfwWindowShouldClose(window)) {
