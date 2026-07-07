@@ -1,4 +1,5 @@
 // clangd format off
+#include <cstdlib>
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 // clang-format on
@@ -24,7 +25,6 @@ int main () {
   glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
   glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
   
-
   GLFWwindow* window = glfwCreateWindow(SRC_WIDTH, SRC_HEIGHT, "Hello Triangle", NULL, NULL);
   if (window == NULL) {
     std::cout << "Failed to create GLFW window" << std::endl;
@@ -47,17 +47,17 @@ int main () {
     0.0f, 0.5f, 0.0f  // (0.0, 0.5 0.0)
   };
   
-// --
+  // ------
   // Stored vertex data(vertices) within memory on the graphics card as 
   // managed by the vertex buffer object VBO.
   unsigned int VBO;
   glGenBuffers(1, &VBO);
   glBindBuffer(GL_ARRAY_BUFFER, VBO);
   glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
-// --
+  // --------
  
-//---------------------
-// -- creating vertexShader
+  //---------------------
+  // -- creating vertexShader
   const char* vertexShaderSource = "#version 330 core\n"
     "layout (location = 0) in vec3 aPos;\n"
     "void main()\n"
@@ -79,11 +79,12 @@ int main () {
     glGetShaderInfoLog(vertexShader, 512, NULL, infoLogs);
     std::cout << "ERROR:SHADER::VERTEX::COMPILATION_FAILED\n" << infoLogs << std::endl;
   }
-//-------------
-  
-// ------------
-//-- creating fragmentShader object with function loadSharedSource
-  std::string fragmentShaderStr = loadShaderSource("fragment-shader.glsl");
+  //-------------
+ 
+
+  // ------------
+  //-- creating fragmentShader object with function loadSharedSource
+  std::string fragmentShaderStr = loadShaderSource("build/fragment-shader.glsl");
   const char* fragmentShaderSource = fragmentShaderStr.c_str();
   
   unsigned int fragmentShader;
@@ -100,10 +101,10 @@ int main () {
     glGetShaderInfoLog(fragmentShader, 512, NULL, infoLogs_fr);
     std::cout << "ERROR::SHADER::FRAGMENT::COMPILATION_FAILED\n" << infoLogs_fr << std::endl;
   }
-// -------------
+  // -------------
 
-//--------------
-//-- Shader program
+  //--------------
+  //-- Shader program
 
   // reder loop
   while (!glfwWindowShouldClose(window)) {
@@ -137,6 +138,8 @@ std::string loadShaderSource(const std::string& filePath) {
   std::ifstream shaderFile(filePath);
   if (!shaderFile.is_open()) {
     std::cerr << "ERROR: Could not open shared file: " << filePath << std::endl;
+
+    exit(EXIT_FAILURE); // stop the program so opengl does not try to compile empty strings
   }
 
   std::stringstream shaderStream;
