@@ -3,6 +3,7 @@
 #include <GLFW/glfw3.h>
 // clang-format on
 #include <iostream>
+#include <ostream>
 // chapter hello triangle
 
 void framebuffer_size_callback(GLFWwindow* window, int width, int height);
@@ -10,6 +11,13 @@ void processInput(GLFWwindow* window);
 
 const unsigned int SRC_WIDTH = 800;
 const unsigned int SRC_HEIGHT = 600;
+
+const char* vertexShaderSource = "#version 330 core\n"
+  "layout (location = 0) in vec3 aPos;\n"
+  "void main()\n"
+  "{\n "
+  " gl_Position = vec4(aPos.x, aPos.y, aPos.z, 1.0); \n"
+  "}\0";
 
 int main () {
   
@@ -41,19 +49,34 @@ int main () {
     0.0f, 0.5f, 0.0f  // (0.0, 0.5 0.0)
   };
   
+  // --
   // Stored vertex data(vertices) within memory on the graphics card as 
   // managed by the vertex buffer object VBO.
   unsigned int VBO;
-
-  glGenBuffers(1, &VBO);  // assign buffer ID: 1 to VBO
-  glBindBuffer(GL_ARRAY_BUFFER, VBO); // assign correct buffer type (GL_ARRAY_BUFFER) for VBO
-
-  // copies the previously defined vertex data into the buffer's memory
+  glGenBuffers(1, &VBO);
+  glBindBuffer(GL_ARRAY_BUFFER, VBO);
   glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
- 
+  // --
+  
+  // -- creating vertexShader
+  unsigned int vertexShader; // shader object
+  vertexShader = glCreateShader(GL_VERTEX_SHADER); // type of shader: GL_VERTEX_SHADER
+  glad_glShaderSource(vertexShader, 1, &vertexShaderSource, NULL);
+  glad_glCompileShader(vertexShader);
+  //---
+  
+  //---
+  //-- safe check if compilation was sucessfull when `glad_glCompileShader()` called
+  int success;
+  char infoLogs[512];
+  glad_glGetShaderiv(vertexShader, GL_COMPILE_STATUS, &success);
 
-
-
+  if (!success) {
+    glad_glGetShaderInfoLog(vertexShader, 512, NULL, infoLogs);
+    std::cout << "ERROR:SHADER::VERTEX::COMPILATION_FAILED\n" << infoLogs << std::endl;
+  }
+  //--
+  
   // reder loop
   while (!glfwWindowShouldClose(window)) {
     processInput(window);
