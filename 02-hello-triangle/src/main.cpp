@@ -102,7 +102,11 @@ int main () {
   unsigned int VBO, VAO;
   glGenVertexArrays(1, &VAO);
   glGenBuffers(1, &VBO);
-  // bind vertex array first, then bind the set vertex buffer(s), and then configure vertex attribute(s)
+
+  // 1. Bind the Vertex Array Object First.
+  // 2. bind and set vertex buffer(s), 
+  // 3. then configure vertex attribute(s)
+  
   glBindVertexArray(VAO); 
 
   glBindBuffer(GL_ARRAY_BUFFER, VBO);
