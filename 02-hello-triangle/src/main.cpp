@@ -105,13 +105,15 @@ int main () {
 
   // 1. Bind the Vertex Array Object First.
   // 2. bind and set vertex buffer(s), 
-  // 3. then configure vertex attribute(s)
+  // 3. then configure vertex attribute(s) pointers, and enable it
   
+  // 1.
+  // --------------------------- BIND VAO ----------------------------------------------
   glBindVertexArray(VAO); 
-
+  // 2.
   glBindBuffer(GL_ARRAY_BUFFER, VBO);
   glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
-
+  // 3.
   glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
   glEnableVertexAttribArray(0);
   
@@ -119,7 +121,7 @@ int main () {
   glBindBuffer(GL_ARRAY_BUFFER, 0);
   
   // unbind the VAO afterwards so other VAOs calls won't accidentally modify this VAO
-  glBindVertexArray(0);
+  glBindVertexArray(0); // -------------UNBIND VAO -------------------------------------
 
   // reder loop
   while (!glfwWindowShouldClose(window)) {
