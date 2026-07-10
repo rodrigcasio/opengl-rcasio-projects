@@ -48,7 +48,6 @@ int main () {
     return -1;
   }
   
-  // build and compile shader program
   // -- vertex Shader
   unsigned int vertexShader; // shader object
   vertexShader = glCreateShader(GL_VERTEX_SHADER); // type of shader: GL_VERTEX_SHADER
@@ -103,7 +102,11 @@ int main () {
   unsigned int VBO, VAO;
   glGenVertexArrays(1, &VAO);
   glGenBuffers(1, &VBO);
-  // bind vertex array first, then bind the set vertex buffer(s), and then configure vertex attribute(s)
+
+  // 1. Bind the Vertex Array Object First.
+  // 2. bind and set vertex buffer(s), 
+  // 3. then configure vertex attribute(s)
+  
   glBindVertexArray(VAO); 
 
   glBindBuffer(GL_ARRAY_BUFFER, VBO);
@@ -112,6 +115,7 @@ int main () {
   glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
   glEnableVertexAttribArray(0);
   
+  // unbind safely the VBO: the call glVertexAtribPointer() registered VBO as the vertex attribute's bound vertex buffer object. so afterwards we can safely unbind
   glBindBuffer(GL_ARRAY_BUFFER, 0);
   
   // unbind the VAO afterwards so other VAOs calls won't accidentally modify this VAO
