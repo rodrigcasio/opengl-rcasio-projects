@@ -13,7 +13,7 @@
 // settings 
 void framebuffer_size_callback(GLFWwindow* window, int width, int height);
 void processInput(GLFWwindow* window);
-
+std::string loadShaderSource(const std::string& filePath);
 
 const unsigned int SRC_WIDTH = 800;
 const unsigned int SRC_HEIGHT = 600;
@@ -43,7 +43,25 @@ int main () {
     std::cout << "Failed to initialize GLAD" << std::endl;
     return -1;
   }
-  
+ 
+  /* vertex shader */
+  std::string vertexShaderStr = loadShaderSource("build/vertex-shader.glsl");
+  const char* vertexShaderSource = vertexShaderStr.c_str();
+  unsigned int vertexShader;
+  vertexShader = glCreateShader(GL_VERTEX_SHADER);
+  glShaderSource(vertexShader, 1, &vertexShaderSource, NULL);
+  glCompileShader(vertexShader);
+  int success;
+  char infoLogs[512];
+  glGetShaderiv(vertexShader, GL_COMPILE_STATUS, &success);
+  if (!success) {
+    glGetShaderInfoLog(vertexShader, 512, NULL, infoLogs);
+    std::cout << "ERROR::SHADER::VERTEX::COMPILATION_FAILED\n" << infoLogs << std::endl;
+  }
+
+  /* fragment shader */
+
+  /* render loop */
   while (!glfwWindowShouldClose(window)) {
     processInput(window);
     
@@ -68,6 +86,19 @@ void processInput(GLFWwindow* window) {
   if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS) {
     glfwSetWindowShouldClose(window, 1); // or true
   }
+}
+
+std::string loadShaderSource(const std::string& filePath) {
+  std::ifstream shaderFile(filePath);
+  if (!shaderFile.is_open()) {
+    std::cerr << "ERROR: Could not open shared file: " << filePath << std::endl;
+
+    exit(EXIT_FAILURE);
+  }
+
+  std::stringstream shaderStream;
+  shaderStream << shaderFile.rdbuf(); /* Read file buffer into stream*/
+  return shaderStream.str();  /* convert stream to string */
 }
 
 
