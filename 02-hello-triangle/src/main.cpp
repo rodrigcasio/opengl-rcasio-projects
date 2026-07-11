@@ -90,18 +90,37 @@ int main () {
   glDeleteShader(vertexShader);
   glDeleteShader(fragmentShader);
   
-
+  /*
   float vertices[] = {
     -0.5f, -0.5f, 0.0f, // (-0.5, -0.5, 0.0) (x, y, z)
     0.5f, -0.5f, 0.0f,  // (0.5, -0.5, 0.0)
     0.0f, 0.5f, 0.0f  // (0.0, 0.5 0.0)
   };
-  
+  */
+
+  /* for rectangle */
+  float vertices[] = {
+    0.5f, 0.5f, 0.0f,   // top right  (0)
+    0.5f, -0.5f, 0.0f,  // bottom right (1)
+    -0.5f, -0.5f, 0.0f, // bottom left  (2)
+    -0.5f, 0.5f, 0.0f   // top left (3)
+  };
+
+  /* for rectangle */
+  unsigned int indices[] = {
+    0, 1, 3,
+    1, 2, 3
+  };
+
+
   // Stored vertex data(vertices) within memory on the graphics card as 
   // managed by the vertex buffer object VBO.
   unsigned int VBO, VAO;
   glGenVertexArrays(1, &VAO);
   glGenBuffers(1, &VBO);
+
+  unsigned int EBO;
+  glGenBuffers(1, &EBO);
 
   // 1. Bind the Vertex Array Object First.
   // 2. bind and set vertex buffer(s), 
@@ -113,12 +132,19 @@ int main () {
   // 2.
   glBindBuffer(GL_ARRAY_BUFFER, VBO);
   glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+  
+  glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
+  glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
+  
   // 3.
   glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
   glEnableVertexAttribArray(0);
   
   // unbind safely the VBO: the call glVertexAtribPointer() registered VBO as the vertex attribute's bound vertex buffer object. so afterwards we can safely unbind
   glBindBuffer(GL_ARRAY_BUFFER, 0);
+
+  /* WARNING: do not unbind the EBO while VAO is active as the bound element buffer object IS stored in the VAO; keep EBO bound */
+  // glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);  
   
   // unbind the VAO afterwards so other VAOs calls won't accidentally modify this VAO
   glBindVertexArray(0); // -------------UNBIND VAO -------------------------------------
@@ -135,7 +161,8 @@ int main () {
     // draw first triangle
     glUseProgram(shaderProgram);
     glBindVertexArray(VAO);
-    glDrawArrays(GL_TRIANGLES, 0, 3);
+    /*glDrawArrays(GL_TRIANGLES, 0, 3);*/
+    glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
     
     // glfw: swap buffers to poll IO events (keys pressed/released, mouse moved etc)
     glfwSwapBuffers(window);
