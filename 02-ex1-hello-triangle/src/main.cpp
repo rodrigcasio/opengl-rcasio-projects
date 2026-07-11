@@ -18,9 +18,6 @@ std::string loadShaderSource(const std::string& filePath);
 const unsigned int SRC_WIDTH = 800;
 const unsigned int SRC_HEIGHT = 600;
 
-
-
-
 int main () {
   
   glfwInit();
@@ -117,6 +114,7 @@ int main () {
   
   glBindVertexArray(0); /*------------------------UBIND VAO ---------------------*/
 
+  /* wireframe mode */
   glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 
   /* render loop */
@@ -134,7 +132,7 @@ int main () {
     
     /* left triangle */
     glDrawArrays(GL_TRIANGLES, 0, 3);
-    /* right triangle */
+    /* right triangle  starting from index index 3 (vertice 4 of the 6) */
     glDrawArrays(GL_TRIANGLES, 3, 3);
     
 
