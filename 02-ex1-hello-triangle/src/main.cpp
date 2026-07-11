@@ -60,13 +60,83 @@ int main () {
   }
 
   /* fragment shader */
+  std::string fragmentShaderStr = loadShaderSource("build/fragment-shader.glsl");
+  const char* fragmentShaderSource = fragmentShaderStr.c_str();
+  unsigned int fragmentShader;
+  fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
+  glShaderSource(fragmentShader, 1, &fragmentShaderSource, NULL);
+  glCompileShader(fragmentShader);
+  glGetShaderiv(fragmentShader, GL_COMPILE_STATUS, &success);
+  if (!success) {
+    glGetShaderInfoLog(fragmentShader, 512, NULL, infoLogs);
+    std::cerr << "ERROR::SHADER::FRAGMENT::COMPILATION_FAILED\n" << infoLogs << std::endl;
+  }
+
+  /* link shaders */
+  unsigned int shaderProgram;
+  shaderProgram = glCreateProgram();
+  glAttachShader(shaderProgram, vertexShader);
+  glAttachShader(shaderProgram, fragmentShader);
+  glLinkProgram(shaderProgram);
+  /* check linking errors */
+  glGetProgramiv(shaderProgram, GL_LINK_STATUS, &success);
+  if (!success) {
+    glGetProgramInfoLog(shaderProgram, 512, NULL, infoLogs);
+
+  }
+  glDeleteShader(vertexShader);
+  glDeleteShader(fragmentShader);
+   
+
+  /* two triangles */
+  float vertices[] {
+    /* left triangle */
+    -0.5f, 0.5f, 0.0f,
+    -0.8f, -0.3f, 0.0f,
+    -0.2f, -0.3f, 0.0f,
+
+    /* right triangle */
+    0.5f, 0.5f, 0.0f,
+    0.2f, -0.3f, 0.0f,
+    0.8f, -0.3f, 0.0f
+  };
+
+  int unsigned VAO, VBO;
+  glGenVertexArrays(1, &VAO);
+  glGenBuffers(1, &VBO);
+
+  glBindVertexArray(VAO); /* ---------------------VAO BOUND ---------------------*/
+
+  glBindBuffer(GL_ARRAY_BUFFER, VBO);
+  glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+
+  glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
+  glEnableVertexAttribArray(0);
+
+  glBindBuffer(GL_ARRAY_BUFFER, 0);
+  
+  glBindVertexArray(0); /*------------------------UBIND VAO ---------------------*/
+
+  glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 
   /* render loop */
   while (!glfwWindowShouldClose(window)) {
+    /* input */
     processInput(window);
-    
+      
+    /* render */
     glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT);
+
+    /* two triangles */
+    glUseProgram(shaderProgram);
+    glBindVertexArray(VAO);
+    
+    /* left triangle */
+    glDrawArrays(GL_TRIANGLES, 0, 3);
+    /* right triangle */
+    glDrawArrays(GL_TRIANGLES, 3, 3);
+    
 
     glfwSwapBuffers(window);
     glfwPollEvents();
