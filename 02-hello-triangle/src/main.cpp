@@ -127,7 +127,7 @@ int main () {
   // 3. then configure vertex attribute(s) pointers, and enable it
   
   // 1.
-  // --------------------------- BIND VAO ----------------------------------------------
+  // --------------------------- VAO BOUND ----------------------------------------------
   glBindVertexArray(VAO); 
   // 2.
   glBindBuffer(GL_ARRAY_BUFFER, VBO);
@@ -147,7 +147,10 @@ int main () {
   // glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);  
   
   // unbind the VAO afterwards so other VAOs calls won't accidentally modify this VAO
-  glBindVertexArray(0); // -------------UNBIND VAO -------------------------------------
+  glBindVertexArray(0); // ------------- UNBIND VAO -------------------------------------
+
+  /* SET Wireframe mode */
+  glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 
   // reder loop
   while (!glfwWindowShouldClose(window)) {
@@ -169,9 +172,10 @@ int main () {
     glfwPollEvents();
   }
 
-  // optional: de-allocate all resources once the've outlived their purpose
+  /* optional: de-allocate all resources once the've outlived their purpose */
   glDeleteVertexArrays(1, &VAO);
   glDeleteBuffers(1, &VBO);
+  glDeleteBuffers(1, &EBO);
   glDeleteProgram(shaderProgram);
 
 
