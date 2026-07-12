@@ -201,7 +201,7 @@ void processInput(GLFWwindow* window) {
 
 std::string loadShaderSource(const std::string& filePath) {
   std::ifstream shaderFile(filePath);
-  if (shaderFile.is_open()) {
+  if (!shaderFile.is_open()) {
     std::cerr << "ERROR: Could not open shared file: " << filePath << std::endl;
     
     exit(EXIT_FAILURE);
