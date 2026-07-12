@@ -81,6 +81,35 @@ int main () {
     std::cerr << "ERROR::SHADER::FRAGMENT::COMPILATION_FAILED\n" << infoLogs << std::endl;
   }
 
+  /* link shaders */ 
+  /* Setting up 2 shader programs */ 
+  unsigned int shaderProgram[2];
+  shaderProgram[0] = glCreateProgram();
+  glAttachShader(shaderProgram[0], vertexShader);
+  glAttachShader(shaderProgram[0], fragmentShader[0]);
+  glLinkProgram(shaderProgram[0]);
+  glGetProgramiv(shaderProgram[0], GL_LINK_STATUS, &success);
+  if (!success) {
+    glGetProgramInfoLog(shaderProgram[0], 512, NULL, infoLogs);
+    std::cerr << "ERROR::SHADER::PROGRAM::LINKING_FAILED\n" << infoLogs << std::endl;
+  }
+  glDeleteShader(fragmentShader[0]);
+  
+  /* Second shader program */
+  shaderProgram[1] = glCreateProgram();
+  glAttachShader(shaderProgram[1], vertexShader);
+  glAttachShader(shaderProgram[1], fragmentShader[1]);
+  glLinkProgram(shaderProgram[1]);
+  glGetProgramiv(shaderProgram[1], GL_LINK_STATUS, &success);
+  if (!success) {
+    glGetProgramInfoLog(shaderProgram[1], 512, NULL, infoLogs);
+    std::cerr << "ERROR::SHADER::PROGRAM::LINKING_FAILED\n" << infoLogs << std::endl;
+  }
+  glDeleteShader(vertexShader);
+  glDeleteShader(fragmentShader[1]);
+
+ 
+  /* data */
   
 
 
