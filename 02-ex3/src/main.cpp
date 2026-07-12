@@ -110,12 +110,48 @@ int main () {
 
  
   /* data */
-  
+  float verticesA[] = {
+    /* left triangle */
+    -0.5f, 0.5f, 0.0f,
+    -0.8f, -0.3f, 0.0f,
+    -0.2f, -0.3f, 0.0f,
+  };
 
-
+  float verticesB[] = {
+    /* right triangle */
+    0.5f, 0.5f, 0.0f,
+    0.2f, -0.3f, 0.0f,
+    0.8f, -0.3f, 0.0f
+  };
 
   unsigned int VBOs[2], VAOs[2];
+  glGenVertexArrays(2, VAOs);
+  glGenBuffers(2, VBOs);
   
+  glBindVertexArray(VAOs[0]); /* ---------------------------- first VAOs[0] BOUND ----------------------------*/
+  
+  glBindBuffer(GL_ARRAY_BUFFER, VBOs[0]);
+  glBufferData(GL_ARRAY_BUFFER, sizeof(verticesA), verticesA, GL_STATIC_DRAW);
+  
+  glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
+  glEnableVertexAttribArray(0);
+
+  glBindBuffer(GL_ARRAY_BUFFER, 0);
+  /* no necessary since we are going to bind directly the next VAO, doing it to keep it modular */
+  glBindVertexArray(0); /* -------------------- UNBIND VAO[0] -------------------------------------*/
+  
+
+  glBindVertexArray(VAOs[1]); /* ---------------------------- first VAOs[1] BOUND ----------------------------*/
+  
+  glBindBuffer(GL_ARRAY_BUFFER, VBOs[1]);
+  glBufferData(GL_ARRAY_BUFFER, sizeof(verticesB), verticesB, GL_STATIC_DRAW);
+
+  glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
+  glEnableVertexAttribArray(0);
+  
+  glBindBuffer(GL_ARRAY_BUFFER, 0);
+  glBindVertexArray(0); /* -------------------- UNBIND VAO[1] -------------------------------------*/
+
   
   /* render loop */
   while (!glfwWindowShouldClose(window)) {
@@ -125,7 +161,8 @@ int main () {
     /* render */
     glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT);
-
+  
+    
 
     glfwSwapBuffers(window);
     glfwPollEvents();
