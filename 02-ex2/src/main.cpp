@@ -1,4 +1,3 @@
-#include <cwchar>
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 
@@ -106,9 +105,10 @@ int main () {
 
   unsigned int VBO, VBO_2, VAO, VAO_2;
   glGenVertexArrays(1, &VAO);
-  glGenVertexArrays(2, &VAO_2);
   glGenBuffers(1, &VBO);
-  glGenBuffers(2, &VBO);
+
+  glGenVertexArrays(1, &VAO_2);
+  glGenBuffers(1, &VBO_2);
 
   /* first VBO & VAO for verticesA (first triangle) */
   glBindVertexArray(VAO); /* ---------------------------- VAO BOUND ----------------------------*/
@@ -124,7 +124,6 @@ int main () {
   glBindVertexArray(0); /* -------------------- UNBIND VAO -------------------------------------*/
 
 
-
   /* second VBO_2 & VAO_2 binding for verticesB (second triangle) */
   glBindVertexArray(VAO_2); /* ---------------------------- VAO_2 BOUND ----------------------------*/
   
@@ -138,7 +137,8 @@ int main () {
 
   glBindVertexArray(0); /* -------------------- UNBIND VAO_2 -------------------------------------*/
 
-
+  /* Wireframe mode */
+  glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 
 
   while (!glfwWindowShouldClose(window)) {
@@ -151,11 +151,26 @@ int main () {
     glClear(GL_COLOR_BUFFER_BIT);
 
     /* draw two triangles each with their own VAO */
-    // glUseProgram(shaderProgram);
+    glUseProgram(shaderProgram);
+    /* draw left triangle first using the data from the first VAO */
+    glBindVertexArray(VAO);
+    glDrawArrays(GL_TRIANGLES, 0, 3);
+
+    /* draw right triangle first using the data from the second VAO_2 */
+    glBindVertexArray(VAO_2);
+    glDrawArrays(GL_TRIANGLES, 0, 3);
 
     glfwSwapBuffers(window);
     glfwPollEvents();
   }
+  
+  /* Optional: deallocate all resources */
+  glDeleteVertexArrays(1, &VAO);
+  glDeleteBuffers(1, &VBO);
+  glDeleteVertexArrays(2, &VAO_2);
+  glDeleteBuffers(2, &VBO_2);
+  glDeleteProgram(shaderProgram);
+
 
   return 0;
 }
@@ -183,8 +198,72 @@ std::string loadShaderSource(const std::string& filePath) {
 }
 
 
+  /* first approach (worked accordingly) for setting up two VAOs and two VBO */
 
-
+  // unsigned int VBO, VBO_2, VAO, VAO_2;
+  // glGenVertexArrays(1, &VAO);
+  // glGenBuffers(1, &VBO);
+  //
+  // glGenVertexArrays(1, &VAO_2);
+  // glGenBuffers(1, &VBO_2);
+  //
+  // /* first VBO & VAO for verticesA (first triangle) */
+  // glBindVertexArray(VAO); /* ---------------------------- VAO BOUND ----------------------------*/
+  //
+  // glBindBuffer(GL_ARRAY_BUFFER, VBO);
+  // glBufferData(GL_ARRAY_BUFFER, sizeof(verticesA), verticesA, GL_STATIC_DRAW);
+  //
+  // glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
+  // glEnableVertexAttribArray(0);
+  //
+  // glBindBuffer(GL_ARRAY_BUFFER, 0);
+  //
+  // glBindVertexArray(0); /* -------------------- UNBIND VAO -------------------------------------*/
+  //
+  //
+  // /* second VBO_2 & VAO_2 binding for verticesB (second triangle) */
+  // glBindVertexArray(VAO_2); /* ---------------------------- VAO_2 BOUND ----------------------------*/
+  //
+  // glBindBuffer(GL_ARRAY_BUFFER, VBO_2);
+  // glBufferData(GL_ARRAY_BUFFER, sizeof(verticesB), verticesB, GL_STATIC_DRAW);
+  //
+  // glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
+  // glEnableVertexAttribArray(0);
+  //
+  // glBindBuffer(GL_ARRAY_BUFFER, 0);
+  //
+  // glBindVertexArray(0); /* -------------------- UNBIND VAO_2 -------------------------------------*/
+  //
+  //  /* render loop */
+  // while (!glfwWindowShouldClose(window)) {
+  //   /* input */
+  //   processInput(window);
+  //
+  //
+  //   /* render */
+  //   glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
+  //   glClear(GL_COLOR_BUFFER_BIT);
+  //
+  //   /* draw two triangles each with their own VAO */
+  //   glUseProgram(shaderProgram);
+  //   /* draw left triangle first using the data from the first VAO */
+  //   glBindVertexArray(VAO);
+  //   glDrawArrays(GL_TRIANGLES, 0, 3);
+  //
+  //   /* draw right triangle first using the data from the second VAO_2 */
+  //   glBindVertexArray(VAO_2);
+  //   glDrawArrays(GL_TRIANGLES, 0, 3);
+  //
+  //   glfwSwapBuffers(window);
+  //   glfwPollEvents();
+  // }
+  //
+  // /* Optional: deallocate all resources */
+  // glDeleteVertexArrays(1, &VAO);
+  // glDeleteBuffers(1, &VBO);
+  // glDeleteVertexArrays(2, &VAO_2);
+  // glDeleteBuffers(2, &VBO_2);
+  // glDeleteProgram(shaderProgram);
 
 
 
