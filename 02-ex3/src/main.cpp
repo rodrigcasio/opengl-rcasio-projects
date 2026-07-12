@@ -154,7 +154,7 @@ int main () {
   glBindVertexArray(0); /* -------------------- UNBIND VAO[1] -------------------------------------*/
 
   /* Wireframe mode */
-  glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+  // glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
   
   /* render loop */
   while (!glfwWindowShouldClose(window)) {
