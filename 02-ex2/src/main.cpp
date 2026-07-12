@@ -1,3 +1,4 @@
+#include <cwchar>
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 
@@ -15,6 +16,7 @@ const unsigned int SRC_WIDTH = 800;
 const unsigned int SRC_HEIGHT = 600;
 
 void framebuffer_size_callback(GLFWwindow* window, int width, int height);
+void processInput(GLFWwindow* window);
 
 int main () {
 
@@ -41,6 +43,9 @@ int main () {
   }
 
   while (!glfwWindowShouldClose(window)) {
+    /* input */
+    processInput(window);
+    
     
     /* render */
     glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
@@ -56,3 +61,21 @@ int main () {
 void framebuffer_size_callback(GLFWwindow* window, int width, int height) {
   glViewport(0, 0, width, height);
 }
+
+void processInput(GLFWwindow* window) {
+  if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS) {
+    glfwSetWindowShouldClose(window, 1); // or true
+  }
+}
+
+
+
+
+
+
+
+
+
+
+
+
