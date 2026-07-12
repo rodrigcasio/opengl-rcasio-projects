@@ -13,7 +13,7 @@ const unsigned int SRC_HEIGHT = 600;
 
 void framebuffer_size_callback(GLFWwindow* window, int width, int height);
 void processInput(GLFWwindow* );
-std::string loadshaderSource(const std::string&);
+std::string loadShaderSource(const std::string&);
 
 int main () {
  
@@ -38,10 +38,51 @@ int main () {
   }
   
   /* vertex shader */
+  std::string vertexShaderStr = loadShaderSource("build/vertex-shader.glsl");
+  const char* vertexShaderSource = vertexShaderStr.c_str();
+  unsigned vertexShader;
+  vertexShader = glCreateShader(GL_VERTEX_SHADER);
+  glShaderSource(vertexShader, 1, &vertexShaderSource, NULL);
+  glCompileShader(vertexShader);
+  int success;
+  char infoLogs[512];
+  glGetShaderiv(vertexShader, GL_COMPILE_STATUS, &success);
+  if (!success) {
+    glGetShaderInfoLog(vertexShader, 512, NULL, infoLogs);
+    std::cout << "ERROR::SHADER::VERTEX::COMPILATION_FAILED\n" << infoLogs << std::endl;
+  }
+
+  /* fragment shader placed within an array*/
+  std::string fragmentShaderStr[2];
+  const char* fragmentShaderSource[2];
+  unsigned int fragmentShader[2];
+
+  /* fragm-s-01.glsl (orange) */
+  fragmentShaderStr[0] = loadShaderSource("build/fragm-s-01.glsl");
+  fragmentShaderSource[0] = fragmentShaderStr[0].c_str();
+  fragmentShader[0] = glCreateShader(GL_FRAGMENT_SHADER);
+  glShaderSource(fragmentShader[0], 1, &fragmentShaderSource[0], NULL);
+  glCompileShader(fragmentShader[0]);
+  glGetShaderiv(fragmentShader[0], GL_COMPILE_STATUS, &success);
+  if (!success) {
+    glGetShaderInfoLog(fragmentShader[0], 512, NULL, infoLogs);
+    std::cerr << "ERROR::SHADER::FRAGMENT::COMPILATION_FAILED\n" << infoLogs << std::endl;
+  }
   
+  /* fragm-s-02.glsl (yellow) */
+  fragmentShaderStr[1] = loadShaderSource("build/fragm-s-02.glsl");
+  fragmentShaderSource[1] = fragmentShaderStr[1].c_str();
+  fragmentShader[1] = glCreateShader(GL_FRAGMENT_SHADER);
+  glShaderSource(fragmentShader[1], 1, &fragmentShaderSource[1], NULL);
+  glCompileShader(fragmentShader[1]);
+  glGetShaderiv(fragmentShader[1], GL_COMPILE_STATUS, &success);
+  if (!success) {
+    glGetShaderInfoLog(fragmentShader[1], 512, NULL, infoLogs);
+    std::cerr << "ERROR::SHADER::FRAGMENT::COMPILATION_FAILED\n" << infoLogs << std::endl;
+  }
+
   
-  /* fragment shader 01 (orange) */
-  /* fragment shader 02 (yellow) */
+
 
 
   unsigned int VBOs[2], VAOs[2];
@@ -75,7 +116,7 @@ void processInput(GLFWwindow* window) {
 }
 
 
-std::string loadshaderSource(const std::string& filePath) {
+std::string loadShaderSource(const std::string& filePath) {
   std::ifstream shaderFile(filePath);
   if (shaderFile.is_open()) {
     std::cerr << "ERROR: Could not open shared file: " << filePath << std::endl;
