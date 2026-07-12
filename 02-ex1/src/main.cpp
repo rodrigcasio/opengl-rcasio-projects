@@ -86,7 +86,7 @@ int main () {
    
 
   /* two triangles */
-  float vertices[] {
+  float vertices[] = {
     /* left triangle */
     -0.5f, 0.5f, 0.0f,
     -0.8f, -0.3f, 0.0f,
