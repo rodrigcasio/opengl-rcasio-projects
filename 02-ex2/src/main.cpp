@@ -1,3 +1,4 @@
+#include <GL/glext.h>
 #include <cwchar>
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
@@ -125,6 +126,19 @@ int main () {
 
 
 
+  /* second VBO_2 & VAO_2 binding for verticesB (second triangle) */
+  glBindVertexArray(VAO_2); /* ---------------------------- VAO_2 BOUND ----------------------------*/
+  
+  glBindBuffer(GL_ARRAY_BUFFER, VBO_2);
+  glBufferData(GL_ARRAY_BUFFER, sizeof(verticesB), verticesB, GL_STATIC_DRAW);
+  
+  glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
+  glEnableVertexAttribArray(0);
+  
+  glBindBuffer(GL_ARRAY_BUFFER, 0);
+
+  glBindVertexArray(0); /* -------------------- UNBIND VAO_2 -------------------------------------*/
+
 
 
 
@@ -136,6 +150,8 @@ int main () {
     /* render */
     glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT);
+
+    /* draw two triangles each with their own VAO */
 
     glfwSwapBuffers(window);
     glfwPollEvents();
