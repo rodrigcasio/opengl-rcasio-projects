@@ -161,12 +161,26 @@ int main () {
     /* render */
     glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT);
-  
+       
+    /* first program */
+    glUseProgram(shaderProgram[0]);
+    glBindVertexArray(VAOs[0]);
+    glDrawArrays(GL_TRIANGLES, 0, 3);
     
+    /* second program */
+    glUseProgram(shaderProgram[1]);
+    glBindVertexArray(VAOs[1]);
+    glDrawArrays(GL_TRIANGLES, 0, 3);
 
     glfwSwapBuffers(window);
     glfwPollEvents();
   }
+
+  /* Optional: Deallocate all resources, VBOs VAOs and shader programs */
+  glDeleteVertexArrays(2, VAOs);
+  glDeleteBuffers(2, VBOs);
+  glDeleteProgram(shaderProgram[0]);
+  glDeleteProgram(shaderProgram[1]);
   
   return 0;
 }
