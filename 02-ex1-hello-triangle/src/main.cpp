@@ -130,12 +130,9 @@ int main () {
     glUseProgram(shaderProgram);
     glBindVertexArray(VAO);
     
-    /* left triangle */
-    glDrawArrays(GL_TRIANGLES, 0, 3);
-    /* right triangle  starting from index index 3 (vertice 4 of the 6) */
-    glDrawArrays(GL_TRIANGLES, 3, 3);
+    /* draw both triangles, 6 vertices */
+    glDrawArrays(GL_TRIANGLES, 0, 6);
     
-
     glfwSwapBuffers(window);
     glfwPollEvents();
 
