@@ -13,6 +13,8 @@ const unsigned int SRC_HEIGHT = 600;
 
 void framebuffer_size_callback(GLFWwindow* window, int width, int height);
 void processInput(GLFWwindow* );
+std::string loadshaderSource(const std::string&);
+
 int main () {
  
   glfwInit();
@@ -35,6 +37,14 @@ int main () {
     return -1;
   }
   
+  /* vertex shader */
+  
+  
+  /* fragment shader 01 (orange) */
+  /* fragment shader 02 (yellow) */
+
+
+  unsigned int VBOs[2], VAOs[2];
   
   
   /* render loop */
@@ -62,4 +72,18 @@ void processInput(GLFWwindow* window) {
   if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS) {
     glfwSetWindowShouldClose(window, 1); // or true can be used
   }
+}
+
+
+std::string loadshaderSource(const std::string& filePath) {
+  std::ifstream shaderFile(filePath);
+  if (shaderFile.is_open()) {
+    std::cerr << "ERROR: Could not open shared file: " << filePath << std::endl;
+    
+    exit(EXIT_FAILURE);
+  }
+
+  std::stringstream shStream;
+  shStream << shaderFile.rdbuf();  /* read file buffer into stream */
+  return shStream.str();  /* convert stream into a string */
 }
