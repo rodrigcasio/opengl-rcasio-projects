@@ -17,12 +17,24 @@ add_executable(opengl-exe
   src/glad.c
 )
 
-
 target_link_libraries(opengl-exe PRIVATE
   glfw
   Threads::Threads
   dl
 )
 
+configure_file(
+  ${CMAKE_CURRENT_SOURCE_DIR}/src/vertex-shader.glsl
+  ${CMAKE_CURRENT_BINARY_DIR}/vertex-shader.glsl
+)
 
+configure_file(
+  ${CMAKE_CURRENT_SOURCE_DIR}/src/fragm-s-01.glsl
+  ${CMAKE_CURRENT_BINARY_DIR}/fragm-s-01.glsl
+)
+
+configure_file(
+  ${CMAKE_CURRENT_SOURCE_DIR}/src/fragm-s-02.glsl
+  ${CMAKE_CURRENT_BINARY_DIR}/fragm-s-02.glsl
+)
 
