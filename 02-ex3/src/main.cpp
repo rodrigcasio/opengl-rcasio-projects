@@ -15,6 +15,7 @@ void framebuffer_size_callback(GLFWwindow* window, int width, int height);
 void processInput(GLFWwindow* );
 std::string loadShaderSource(const std::string&);
 
+/* Exercise 3 (Hello-Triangle)*/
 int main () {
  
   glfwInit();
