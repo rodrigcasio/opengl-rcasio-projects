@@ -59,8 +59,21 @@ int main () {
   }
 
   /* fragment shader */
+  std::string fragmentShaderStr = loadShaderSource("build/fragment-shader.glsl");
+  const char* fragmentShaderSource = fragmentShaderStr.c_str();
+  unsigned int fragmentShader;
+  fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
+  glShaderSource(fragmentShader, 1, &fragmentShaderSource, NULL);
+  glCompileShader(fragmentShader);
+  glGetShaderiv(fragmentShader, GL_COMPILE_STATUS, &success);
+  if (!success) {
+    glGetShaderInfoLog(fragmentShader, 512, NULL, infoLogs);
+    std::cerr << "ERROR::SHADER::FRAGMENT::COMPILATION_FAILED\n" << infoLogs << std::endl;
+  }
 
   /* link shaders */
+  
+  
 
   while (!glfwWindowShouldClose(window)) {
     /* input */
