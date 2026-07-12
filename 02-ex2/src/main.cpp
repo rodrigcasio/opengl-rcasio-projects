@@ -1,4 +1,3 @@
-#include <GL/glext.h>
 #include <cwchar>
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
@@ -152,6 +151,7 @@ int main () {
     glClear(GL_COLOR_BUFFER_BIT);
 
     /* draw two triangles each with their own VAO */
+    // glUseProgram(shaderProgram);
 
     glfwSwapBuffers(window);
     glfwPollEvents();
