@@ -79,14 +79,14 @@ int main () {
   glGetProgramiv(shaderProgram, GL_LINK_STATUS, &success);
   if (!success) {
     glGetProgramInfoLog(shaderProgram, 512, NULL, infoLogs);
-
+    std::cout << "ERROR::SHADER::PROGRAM::LINKING_FAILED\n" << infoLogs << std::endl;
   }
   glDeleteShader(vertexShader);
   glDeleteShader(fragmentShader);
    
 
   /* two triangles */
-  float vertices[] {
+  float vertices[] = {
     /* left triangle */
     -0.5f, 0.5f, 0.0f,
     -0.8f, -0.3f, 0.0f,
@@ -98,7 +98,7 @@ int main () {
     0.8f, -0.3f, 0.0f
   };
 
-  int unsigned VAO, VBO;
+  unsigned int VAO, VBO;
   glGenVertexArrays(1, &VAO);
   glGenBuffers(1, &VBO);
 
@@ -130,16 +130,19 @@ int main () {
     glUseProgram(shaderProgram);
     glBindVertexArray(VAO);
     
-    /* left triangle */
-    glDrawArrays(GL_TRIANGLES, 0, 3);
-    /* right triangle  starting from index index 3 (vertice 4 of the 6) */
-    glDrawArrays(GL_TRIANGLES, 3, 3);
+    /* draw both triangles, 6 vertices */
+    glDrawArrays(GL_TRIANGLES, 0, 6);
     
-
     glfwSwapBuffers(window);
     glfwPollEvents();
 
   }
+
+  /* deallocate all resources */
+  glDeleteVertexArrays(1, &VAO);
+  glDeleteBuffers(1, &VBO);
+  glDeleteProgram(shaderProgram);
+
 
   glfwTerminate();
 
