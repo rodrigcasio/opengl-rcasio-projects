@@ -1,3 +1,4 @@
+#include <GL/gl.h>
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 
@@ -118,7 +119,9 @@ int main () {
 
     /* draw triangle */
     glUseProgram(shaderProgram);
-
+    glBindVertexArray(VAO);
+    glDrawArrays(GL_TRIANGLES, 0, 3);
+    
     glfwSwapBuffers(window);
     glfwPollEvents();
   }
