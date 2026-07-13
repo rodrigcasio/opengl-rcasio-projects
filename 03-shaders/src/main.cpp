@@ -12,6 +12,7 @@ const unsigned int SCR_HEIGHT = 600;
 
 void framebuffer_size_callback(GLFWwindow* window, int width, int height);
 void processInput(GLFWwindow* window);
+std::string loadShaderSource(const std::string& filePath);
 
 int main () {
   
@@ -39,7 +40,32 @@ int main () {
 
 
   /* vertex shader */
+  int success;
+  char infoLogs[512];
+  std::string vertexShaderStr = loadShaderSource("build/vertex-shader.glsl");
+  const char* vertexShaderSource = vertexShaderStr.c_str();
+  unsigned int vertexShader;
+  vertexShader = glCreateShader(GL_VERTEX_SHADER);
+  glShaderSource(vertexShader, 1, &vertexShaderSource, NULL);
+  glCompileShader(vertexShader);
+  glGetShaderiv(vertexShader, GL_COMPILE_STATUS, &success);
+  if (!success) {
+    glGetShaderInfoLog(vertexShader, 512, NULL, infoLogs);
+    std::cout << "ERROR::SHADER::VERTEX::COMPILATION_FAILED\n" << infoLogs << std::endl;
+  }
+  
   /* frag shader */
+  std::string fragmentShaderStr = loadShaderSource("build/frag-shader.glsl");
+  const char* fragmentShaderSource = fragmentShaderStr.c_str();
+  unsigned int fragmentShader;
+  fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
+  glShaderSource(fragmentShader, 1, &fragmentShaderSource, NULL);
+  glCompileShader(fragmentShader);
+  glGetShaderiv(fragmentShader, GL_COMPILE_STATUS, &success);
+  if (!success) {
+    glGetShaderInfoLog(fragmentShader, 512, NULL, infoLogs);
+    std::cout << "ERROR::SHADER::FRAGMENT::COMPILATION_FAILED\n" << infoLogs << std::endl;
+  }
 
   /* vertex data */
   float vertices[] = {
@@ -76,6 +102,7 @@ int main () {
     glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT);
 
+    /* draw triangle */
 
     glfwSwapBuffers(window);
     glfwPollEvents();
@@ -97,3 +124,15 @@ void processInput(GLFWwindow* window) {
 }
 
 
+std::string loadShaderSource(const std::string& filePath) {
+  std::ifstream shaderFile(filePath);
+  if (!shaderFile.is_open()) {
+    std::cerr << "ERROR: Could not open shared file" << filePath << std::endl;
+    
+    exit(EXIT_FAILURE);
+  }
+
+  std::stringstream shaderStream;
+  shaderStream << shaderFile.rdbuf(); /* read file buffer into stream */
+  return shaderStream.str(); /* convert stream into a string */
+}
