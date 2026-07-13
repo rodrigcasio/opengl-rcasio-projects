@@ -22,15 +22,15 @@ target_link_libraries(opengl-exe PRIVATE
   dl
 )
 
-# configure_file(
-#   ${CMAKE_CURRENT_SOURCE_DIR}/src/vertex-shader.glsl
-#   ${CMAKE_CURRENT_BINARY_DIR}/vertex-shader.glsl
-# )
-#
-# configure_file(
-#   ${CMAKE_CURRENT_SOURCE_DIR}/src/frag-shader.glsl
-#   ${CMAKE_CURRENT_BINARY_DIR}/frag-shader.glsl
-# )
+configure_file(
+  ${CMAKE_CURRENT_SOURCE_DIR}/src/shaders/vertex-shader.glsl
+  ${CMAKE_CURRENT_BINARY_DIR}/vertex-shader.glsl
+)
+
+configure_file(
+  ${CMAKE_CURRENT_SOURCE_DIR}/src/shaders/frag-shader.glsl
+  ${CMAKE_CURRENT_BINARY_DIR}/frag-shader.glsl
+)
 
 
 
