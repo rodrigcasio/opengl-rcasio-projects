@@ -7,8 +7,8 @@
 #include <sstream>
 #include <cstdlib>
 // Shaders CH
-const unsigned int SRC_WIDTH = 800;
-const unsigned int SRC_HEIGHT = 600;
+const unsigned int SCR_WIDTH = 800;
+const unsigned int SCR_HEIGHT = 600;
 
 void framebuffer_size_callback(GLFWwindow* window, int width, int height);
 void processInput(GLFWwindow* window);
@@ -20,7 +20,7 @@ int main () {
   glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
   glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
- GLFWwindow* window = glfwCreateWindow(SRC_WIDTH, SCR_HEIGHT, "Shaders CH", NULL, NULL);
+ GLFWwindow* window = glfwCreateWindow(SCR_WIDTH, SCR_HEIGHT, "Shaders CH", NULL, NULL);
  if (window == NULL) {
    std::cout << "Failed to create GLFW Window" << std::endl;
    
@@ -41,12 +41,31 @@ int main () {
   /* vertex shader */
   /* frag shader */
 
+  /* vertex data */
+  float vertices[] = {
+    /* centered triangle*/
+    -0.5f, -0.5f, 0.0f,
+    0.5f, -0.5f, 0.0f,
+    0.0f, 0.5f, 0.0f
+  };
   
   /* buffers */
   unsigned int VAO, VBO;
   glGenVertexArrays(1, &VAO);
   glGenBuffers(1, &VBO);
 
+  glBindVertexArray(VAO); /* ---------------------------- VAO BOUND ----------------------------*/
+
+  glBindBuffer(GL_ARRAY_BUFFER, VBO);
+  glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+  
+  glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
+  glEnableVertexAttribArray(0);
+
+  glGenBuffers(GL_ARRAY_BUFFER, 0);
+
+  glBindVertexArray(0); /* ---------------------------- VAO Unbound  ----------------------------*/
+  
   
   /* render loop */
   while (!glfwWindowShouldClose(window)) {
