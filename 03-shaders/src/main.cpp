@@ -78,6 +78,8 @@ int main () {
     glGetProgramInfoLog(shaderProgram, 512, NULL, infoLogs);
     std::cout << "ERROR::SHADER::PROGRAM::LINKING_FAILED\n" << infoLogs << std::endl;
   }
+  glDeleteShader(vertexShader);
+  glDeleteShader(fragmentShader);
   
   /* vertex data */
   float vertices[] = {
@@ -115,6 +117,7 @@ int main () {
     glClear(GL_COLOR_BUFFER_BIT);
 
     /* draw triangle */
+    glUseProgram(shaderProgram);
 
     glfwSwapBuffers(window);
     glfwPollEvents();
