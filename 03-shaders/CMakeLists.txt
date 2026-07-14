@@ -22,15 +22,15 @@ target_link_libraries(opengl-exe PRIVATE
   dl
 )
 
-target_compile_definitions(opengl-exe PRIVATE
-  SHADER_DIRECTORY="${CMAKE_CURRENT_BINARY_DIR}/shaders/"
+configure_file(
+  ${CMAKE_CURRENT_SOURCE_DIR}/src/vertex-shader.glsl
+  ${CMAKE_CURRENT_BINARY_DIR}/vertex-shader.glsl
 )
 
-add_custom_command(
-  TARGET opengl-exe POST_BUILD
-  COMMAND ${CMAKE_COMMAND} -E copy_directory
-  ${CMAKE_CURRENT_SOURCE_DIR}/src/shaders
-  ${CMAKE_CURRENT_BINARY_DIR}/shaders
+configure_file(
+  ${CMAKE_CURRENT_SOURCE_DIR}/src/frag-shader.glsl
+  ${CMAKE_CURRENT_BINARY_DIR}/frag-shader.glsl
 )
+
 
 
