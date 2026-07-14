@@ -22,7 +22,9 @@ target_link_libraries(opengl-exe PRIVATE
   dl
 )
 
+# modular way to load and place a copy of shaders to build/ dir
 configure_file(
+  # Start exactly where the CMakeLists.txt file is sitting, look inside the src/ dir, then look inside shaders/ dir and grab vertex-shader.glsl
   ${CMAKE_CURRENT_SOURCE_DIR}/src/shaders/vertex-shader.glsl
   ${CMAKE_CURRENT_BINARY_DIR}/vertex-shader.glsl
   COPYONLY
@@ -30,6 +32,8 @@ configure_file(
 
 configure_file(
   ${CMAKE_CURRENT_SOURCE_DIR}/src/shaders/frag-shader.glsl
+  
+  # take that file you grabbed from my source code, and copy a fresh version of it straight  into the build/ dir
   ${CMAKE_CURRENT_BINARY_DIR}/frag-shader.glsl
   COPYONLY
 )
