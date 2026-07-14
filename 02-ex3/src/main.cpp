@@ -191,6 +191,7 @@ int main () {
   glDeleteProgram(shaderProgramOrange);
   glDeleteProgram(shaderProgramYellow);
   
+  glfwTerminate();
   return 0;
 }
 
