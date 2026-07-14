@@ -126,6 +126,11 @@ int main () {
     glfwSwapBuffers(window);
     glfwPollEvents();
   }
+  
+  /* Optional: Deallocate all resources, VBOs VAOs and shader programs */
+  glDeleteVertexArrays(1, &VAO);
+  glDeleteBuffers(1, &VBO);
+  glDeleteProgram(shaderProgram);
 
   
   glfwTerminate();
