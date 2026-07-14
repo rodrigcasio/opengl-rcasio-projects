@@ -38,13 +38,14 @@ int main () {
     return -1;
   }
 
-
   /* vertex shader */
   int success;
   char infoLogs[512];
-  std::string vertexShaderStr = loadShaderSource("build/vertex-shader.glsl");
+  std::string vertexPath = std::string(SHADER_DIRECTORY) + "vertex-shader.glsl";
+  std::string vertexShaderStr = loadShaderSource(vertexPath);
   const char* vertexShaderSource = vertexShaderStr.c_str();
   unsigned int vertexShader;
+
   vertexShader = glCreateShader(GL_VERTEX_SHADER);
   glShaderSource(vertexShader, 1, &vertexShaderSource, NULL);
   glCompileShader(vertexShader);
@@ -55,9 +56,11 @@ int main () {
   }
   
   /* frag shader */
-  std::string fragmentShaderStr = loadShaderSource("build/frag-shader.glsl");
+  std::string fragmentPath = std::string(SHADER_DIRECTORY) + "frag-shader.glsl";
+  std::string fragmentShaderStr = loadShaderSource(fragmentPath);
   const char* fragmentShaderSource = fragmentShaderStr.c_str();
   unsigned int fragmentShader;
+
   fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
   glShaderSource(fragmentShader, 1, &fragmentShaderSource, NULL);
   glCompileShader(fragmentShader);
