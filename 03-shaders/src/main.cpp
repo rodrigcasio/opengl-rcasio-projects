@@ -6,6 +6,8 @@
 #include <fstream>
 #include <sstream>
 #include <cstdlib>
+#include <cmath>
+
 // Shaders CH
 const unsigned int SCR_WIDTH = 800;
 const unsigned int SCR_HEIGHT = 600;
@@ -82,7 +84,7 @@ int main () {
   }
   glDeleteShader(vertexShader);
   glDeleteShader(fragmentShader);
-  
+
   /* vertex data */
   float vertices[] = {
     /* centered triangle*/
@@ -118,11 +120,19 @@ int main () {
     glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT);
 
-    /* draw triangle */
+    /* activate shader*/
     glUseProgram(shaderProgram);
+
+    /* update uniform value */
+    float timeValue = glfwGetTime();
+    float greenValue = (sin(timeValue) / 2.0f) + 0.5f;
+    int vertexColorLocation = glGetUniformLocation(shaderProgram, "ourColor");
+    glUniform4f(vertexColorLocation, 0.0f, greenValue, 0.0f, 1.0f);  // R, G[greenValue], B 
+
+    /* render triangle */
     glBindVertexArray(VAO);
     glDrawArrays(GL_TRIANGLES, 0, 3);
-    
+
     glfwSwapBuffers(window);
     glfwPollEvents();
   }
