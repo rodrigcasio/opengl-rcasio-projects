@@ -6,6 +6,8 @@
 #include <fstream>
 #include <sstream>
 #include <cstdlib>
+#include <cmath>
+
 // Shaders CH
 const unsigned int SCR_WIDTH = 800;
 const unsigned int SCR_HEIGHT = 600;
@@ -82,13 +84,15 @@ int main () {
   }
   glDeleteShader(vertexShader);
   glDeleteShader(fragmentShader);
-  
+
   /* vertex data */
   float vertices[] = {
     /* centered triangle*/
-    -0.5f, -0.5f, 0.0f,
-    0.5f, -0.5f, 0.0f,
-    0.0f, 0.5f, 0.0f
+    /* Positions */         /* Colors */  
+    /* x     y      z       R      G     B   */
+     0.5f, -0.5f, 0.0f,    1.0f, 0.0f, 0.0f,  // bottom right
+    -0.5f, -0.5f, 0.0f,    0.0f, 1.0f, 0.0f,  // bottom left
+     0.0f, 0.5f, 0.0f,     0.0f, 0.0f, 1.0f,  // top
   };
   
   /* buffers */
@@ -100,9 +104,19 @@ int main () {
 
   glBindBuffer(GL_ARRAY_BUFFER, VBO);
   glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+ 
+  /* if want to use the uniform varible */
+  // glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3* sizeof(float), (void*)0);
+  // glEnableVertexAttribArray(0);
   
-  glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
+  /* update when color (new vertex attribute) added in the vertex data */
+  /* position attribute */
+  glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)0);
   glEnableVertexAttribArray(0);
+
+  /* color attribute */
+  glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*) (3 * sizeof(float)));
+  glEnableVertexAttribArray(1);
 
   glGenBuffers(GL_ARRAY_BUFFER, 0);
 
@@ -118,11 +132,19 @@ int main () {
     glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT);
 
-    /* draw triangle */
+    /* activate shader*/
     glUseProgram(shaderProgram);
+
+    /* update uniform value  if want to use uniform practice "ourColor" */
+    // float timeValue = glfwGetTime();
+    // float greenValue = (sin(timeValue) / 2.0f) + 0.5f;
+    // int vertexColorLocation = glGetUniformLocation(shaderProgram, "ourColor");
+    // glUniform4f(vertexColorLocation, 0.0f, greenValue, 0.0f, 1.0f);  // R, G[greenValue], B 
+
+    /* render triangle */
     glBindVertexArray(VAO);
     glDrawArrays(GL_TRIANGLES, 0, 3);
-    
+
     glfwSwapBuffers(window);
     glfwPollEvents();
   }
