@@ -104,6 +104,10 @@ int main () {
 
   glBindBuffer(GL_ARRAY_BUFFER, VBO);
   glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+ 
+  /* if want to use the uniform varible */
+  // glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3* sizeof(float), (void*)0);
+  // glEnableVertexAttribArray(0);
   
   /* update when color (new vertex attribute) added in the vertex data */
   /* position attribute */
@@ -131,11 +135,11 @@ int main () {
     /* activate shader*/
     glUseProgram(shaderProgram);
 
-    /* update uniform value */
-    float timeValue = glfwGetTime();
-    float greenValue = (sin(timeValue) / 2.0f) + 0.5f;
-    int vertexColorLocation = glGetUniformLocation(shaderProgram, "ourColor");
-    glUniform4f(vertexColorLocation, 0.0f, greenValue, 0.0f, 1.0f);  // R, G[greenValue], B 
+    /* update uniform value  if want to use uniform practice "ourColor" */
+    // float timeValue = glfwGetTime();
+    // float greenValue = (sin(timeValue) / 2.0f) + 0.5f;
+    // int vertexColorLocation = glGetUniformLocation(shaderProgram, "ourColor");
+    // glUniform4f(vertexColorLocation, 0.0f, greenValue, 0.0f, 1.0f);  // R, G[greenValue], B 
 
     /* render triangle */
     glBindVertexArray(VAO);
