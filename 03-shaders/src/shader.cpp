@@ -30,6 +30,7 @@ Shader::Shader(const char* vertexPath, const char* fragmentPath)  {
     vShaderFile.close();
     fShaderFile.close();
 
+    /* covert stream into string */
     vertexCode = vShaderStream.str();
     fragmentCode = fShaderStream.str();
     
@@ -57,7 +58,7 @@ Shader::Shader(const char* vertexPath, const char* fragmentPath)  {
   glCompileShader(fragment);
   checkCompileErrors(fragment, "FRAGMENT");
 
-  /* Linking shaders */
+  /* Linking shaders (shader program) */
   ID = glCreateProgram();
   glAttachShader(ID, vertex);
   glAttachShader(ID, fragment);
