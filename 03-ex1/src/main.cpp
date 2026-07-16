@@ -8,6 +8,7 @@ const unsigned int SCR_WIDTH = 800;
 const unsigned int SCR_HEIGHT = 600;
 void framebuffer_size_callback(GLFWwindow* window, int width, int height);
 void processInput(GLFWwindow* window);
+// exerice 1 ch: Shaders
 
 int main () {
  
@@ -32,7 +33,7 @@ int main () {
     return -1;
   }
 
-  Shader ourShaders("build/vertex-shader.glsl", "build/frag-shader.glsl");
+  Shader ourShader("build/vertex-shader.glsl", "build/frag-shader.glsl");
 
   float vertices[] = {
     /* centered triangle (upside down) */
@@ -40,7 +41,7 @@ int main () {
     /* x     y      z       R      G     B   */
      0.5f, 0.5f, 0.0f,    1.0f, 0.0f, 0.0f,  // top right
     -0.5f, 0.5f, 0.0f,    0.0f, 1.0f, 0.0f,  // top left
-     0.0f, 0.5f, 0.0f,    0.0f, 0.0f, 1.0f,  // bottom middle
+     0.0f, 0.5f, 0.0f,    0.0f, 0.0f, 1.0f  // bottom middle
   };
 
   /* buffers */
@@ -56,7 +57,7 @@ int main () {
   glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)0);
   glEnableVertexAttribArray(0);
 
-  glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)(3*sizeof(float)));
+  glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*) (3*sizeof(float)));
   glEnableVertexAttribArray(1);
 
   glBindBuffer(GL_ARRAY_BUFFER, 0);
@@ -76,7 +77,7 @@ int main () {
    glClear(GL_COLOR_BUFFER_BIT);
    
    /* start program */
-   ourShaders.use();
+   ourShader.use();
 
    /* Draw Triangle */
    glBindVertexArray(VAO);
