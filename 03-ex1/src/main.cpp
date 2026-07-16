@@ -36,12 +36,17 @@ int main () {
   Shader ourShader("build/vertex-shader.glsl", "build/frag-shader.glsl");
 
   float vertices[] = {
-    /* centered triangle (upside down) */
+    /* centered triangle (upside down from vertex-shader [ -aPos.y]) */
     /* Positions */         /* Colors */  
     /* x     y      z       R      G     B   */
-     0.5f, -0.5f, 0.0f,     1.0f, 0.0f, 0.0f,  // top right
-    -0.5f,  -0.5f, 0.0f,    0.0f, 1.0f, 0.0f,  // top left
-     0.0f,  0.5f, 0.0f,     0.0f, 0.0f, 1.0f,  // bottom middle (can be changed here or in aPos.y [vertex-shader.glsl])
+     0.5f, -0.5f, 0.0f,     1.0f, 0.0f, 0.0f,  // bottom right
+    -0.5f, -0.5f, 0.0f,     0.0f, 1.0f, 0.0f,  // bottom left
+     0.0f,  0.5f, 0.0f,     0.0f, 0.0f, 1.0f,  // top middle
+    
+    /* manually change the upside down the triangle with vertices [must -> vec4(aPos, 1.0)]*/
+    //  0.5f, 0.5f, 0.0f,     1.0f, 0.0f, 0.0f,  // top right
+    // -0.5f,  0.5f, 0.0f,    0.0f, 1.0f, 0.0f,  // top left
+    //  0.0f,  -0.5f, 0.0f,     0.0f, 0.0f, 1.0f,  // bottom middle
   };
 
   /* buffers */
