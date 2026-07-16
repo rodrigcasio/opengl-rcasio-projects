@@ -32,13 +32,39 @@ int main () {
     return -1;
   }
 
-  Shader outShaders("build/vertex-shader.glsl", "build/frag-shader.glsl");
-  
+  Shader ourShaders("build/vertex-shader.glsl", "build/frag-shader.glsl");
 
-  /* triangle upside down */
   float vertices[] = {
-    
+    /* centered triangle (upside down) */
+    /* Positions */         /* Colors */  
+    /* x     y      z       R      G     B   */
+     0.5f, 0.5f, 0.0f,    1.0f, 0.0f, 0.0f,  // top right
+    -0.5f, 0.5f, 0.0f,    0.0f, 1.0f, 0.0f,  // top left
+     0.0f, 0.5f, 0.0f,    0.0f, 0.0f, 1.0f,  // bottom middle
   };
+
+  /* buffers */
+  unsigned int VBO, VAO;
+  glGenVertexArrays(1, &VAO);
+  glGenBuffers(1, &VBO);
+
+  glBindVertexArray(VAO); /* ---------------------------- VAO BOUND ----------------------------*/
+  
+  glBindBuffer(GL_ARRAY_BUFFER, VBO);
+  glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+
+  glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)0);
+  glEnableVertexAttribArray(0);
+
+  glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)(3*sizeof(float)));
+  glEnableVertexAttribArray(1);
+
+  glBindBuffer(GL_ARRAY_BUFFER, 0);
+
+  glBindVertexArray(0); /* ---------------------------- VAO Unbound  ----------------------------*/
+
+  /* wireframe mode */
+  // glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 
   /* render loop */
  while (!glfwWindowShouldClose(window)) {
@@ -48,11 +74,22 @@ int main () {
    /* render */
    glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
    glClear(GL_COLOR_BUFFER_BIT);
+   
+   /* start program */
+   ourShaders.use();
+
+   /* Draw Triangle */
+   glBindVertexArray(VAO);
+   glDrawArrays(GL_TRIANGLES, 0, 3);
 
    glfwSwapBuffers(window);
    glfwPollEvents();
  }
-
+ 
+  glDeleteVertexArrays(1, &VAO);
+  glDeleteBuffers(1, &VBO);
+   
+ glfwTerminate();
   return 0;
 }
 
