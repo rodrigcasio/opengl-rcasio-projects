@@ -14,6 +14,7 @@ find_package(Threads REQUIRED)
 add_executable(opengl-exe 
   src/main.cpp
   src/glad.c
+  src/shader.cpp
 )
 
 target_link_libraries(opengl-exe PRIVATE
