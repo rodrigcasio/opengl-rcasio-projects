@@ -110,9 +110,7 @@ int main () {
   /* Optional: Deallocate all resources, VBOs VAOs and shader programs */
   glDeleteVertexArrays(1, &VAO);
   glDeleteBuffers(1, &VBO);
-  glDeleteProgram(ourShader.ID);
 
-  
   glfwTerminate();
   return 0;
 }
