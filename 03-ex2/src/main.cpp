@@ -83,7 +83,8 @@ int main () {
     
     /* set up uniform value from the vertex-shader declared */
     /* moving x axis to the right (moving triangle to the right) */
-    myShader.setFloat("xOffset", 0.3f); 
+    float offset = 0.3f;
+    myShader.setFloat("xOffset",  offset); 
 
     /* draw triangle */
     glBindVertexArray(VAO);
