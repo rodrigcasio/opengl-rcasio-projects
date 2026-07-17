@@ -3,9 +3,7 @@
 #include "shader.h"
 #include <iostream>
 // Exercise 2 CH: Shader
-/* Specify a horizontal offset via a uniform and move the triangle 
- * to the right side of the screen in the vertex shader using this offset value:
- * */
+
 const unsigned int SCR_WIDTH = 800;
 const unsigned int SCR_HEIGHT = 600;
 
