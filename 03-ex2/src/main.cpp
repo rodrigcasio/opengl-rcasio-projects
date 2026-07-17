@@ -3,7 +3,9 @@
 #include "shader.h"
 #include <iostream>
 // Exercise 2 CH: Shader
-
+/* Specify a horizontal offset via a uniform and move the triangle 
+ * to the right side of the screen in the vertex shader using this offset value:
+ * */
 const unsigned int SCR_WIDTH = 800;
 const unsigned int SCR_HEIGHT = 600;
 
@@ -79,6 +81,10 @@ int main () {
     /* start program */
     myShader.use();
     
+    /* set up uniform value from the vertex-shader declared */
+    /* moving x axis to the right (moving triangle to the right) */
+    myShader.setFloat("xOffset", 0.3f); 
+
     /* draw triangle */
     glBindVertexArray(VAO);
     glDrawArrays(GL_TRIANGLES, 0, 3);
