@@ -1,0 +1,5 @@
+## Chapter Hello Triangle
+
+### Exercise 1:
+
+- `Try to draw 2 triangles next to each other using glDrawArrays by adding more vertices to your data`

@@ -1,0 +1,5 @@
+## Chapter Hello Triangle
+
+### Exercise 2:
+
+- `Now create the same 2 triangles using two different VAOs and VBOs for their data`
