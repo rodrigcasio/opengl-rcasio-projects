@@ -33,6 +33,38 @@ int main () {
     return -1;
   }
 
+  /* vertex data */
+  float vertices[] = {
+    /* Positions */         /* Colors */  
+    /* x     y      z       R      G     B   */
+     0.5f, -0.5f, 0.0f,     1.0f, 0.0f, 0.0f,  // bottom right
+    -0.5f, -0.5f, 0.0f,     0.0f, 1.0f, 0.0f,  // bottom left
+     0.0f,  0.5f, 0.0f,     0.0f, 0.0f, 1.0f,  // top middle
+  };
+
+  Shader myProgram("build/vertex-shader.glsl", "build/frag-shader.glsl");
+
+  /* VBO VAO  */
+  unsigned int VAO, VBO;
+  glGenVertexArrays(1, &VAO);
+  glGenBuffers(1, &VBO);
+
+  glBindVertexArray(VAO); /* ---- BIND VAO ---- */
+  
+  glBindBuffer(GL_ARRAY_BUFFER, VBO);
+  glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+
+  glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)0);
+  glEnableVertexAttribArray(0);
+  
+  glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*) (3 * sizeof(float)));
+  glEnableVertexAttribArray(1);
+
+  glBindBuffer(GL_ARRAY_BUFFER, 0);
+  
+  glBindVertexArray(0); /* ---- UNBIND VAO ---- */
+
+
   while (!glfwWindowShouldClose(window)) {
     /* input */
     processInput(window);
@@ -40,10 +72,23 @@ int main () {
     glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT);
 
+    /* start program */
+    myProgram.use();
+
+    /* set uniform value */
+    float offset = 0.3f;
+    myProgram.setFloat("xOffset", offset);
+    
+    /* draw triangle */
+    glBindVertexArray(VAO);
+    glDrawArrays(GL_TRIANGLES, 0, 3);
+
     glfwSwapBuffers(window);
     glfwPollEvents(); 
   }
   
+  glDeleteBuffers(1, &VBO);
+  glDeleteVertexArrays(1, &VAO);
   glfwTerminate();
   
   return 0;
