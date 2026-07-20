@@ -5,4 +5,4 @@
 
 - `Adjust the vertex shader so that the triangle is upside down`
 
-![result](./result/ev-ex1.png)
+![result](./result/ev-ex1-or.png)
