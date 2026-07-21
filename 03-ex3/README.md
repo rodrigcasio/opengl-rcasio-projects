@@ -4,7 +4,7 @@
 
 - `Output the vertex position to the fragment shader using the out keyword and set the fragment's color equal to this vertex position (see how even the vertex position values are interpolated across the triangle). Once you managed to do this; try to answer the following question: why is the bottom-left side of our triangle black?`
 
-- r: (learnopgl)the output of our fragment's color is equal to the (interpolated) coordinate of 
+- r: (learnopengl)the output of our fragment's color is equal to the (interpolated) coordinate of 
 the triangle. What is the coordinate of the bottom-left point of our triangle? This is (-0.5f, -0.5f, 0.0f). Since the
 xy values are negative they are clamped to a value of 0.0f. This happens all the way to the center sides of the 
 triangle since from that point on the values will be interpolated positively again. Values of 0.0f are of course black
