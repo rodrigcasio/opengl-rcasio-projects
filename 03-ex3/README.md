@@ -6,4 +6,4 @@
 
 
 
-![result](./result/ex3-ev.png)
+![result](./result/ex3-ev-vec3-instead.png)
