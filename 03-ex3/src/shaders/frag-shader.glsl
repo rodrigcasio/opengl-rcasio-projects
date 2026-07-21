@@ -2,11 +2,11 @@
 # version 330 core
 out vec4 FragColor;
 
-in vec4 ourPosition;
+in vec3 ourPosition;
 // in vec3 ourColor;
 
 void main () {
-  FragColor = ourPosition;
+  FragColor = vec4(ourPosition, 1.0);   // or FragColor = ourPosition if vec4
 }
 
 
