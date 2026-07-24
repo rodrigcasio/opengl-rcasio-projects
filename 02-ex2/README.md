@@ -3,3 +3,5 @@
 ### Exercise 2:
 
 - `Now create the same 2 triangles using two different VAOs and VBOs for their data`
+
+![result](./result/ex2-.png)
