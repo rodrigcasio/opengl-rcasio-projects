@@ -3,3 +3,5 @@
 ### Exercise 3:
 
 - `Create two shader programs where the second program uses a different fragment shader that outputs the color yellow; draw both triangles again where one outputs the color yellow`
+
+![result](./result/ex-3.png)
