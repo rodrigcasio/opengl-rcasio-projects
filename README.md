@@ -3,7 +3,7 @@
 ### Quick workflow
 
 - run within project directory (e.g '01-creating-a-window') to scan systems config and create build tracks.
-`cmake -S . -B build`
+`cmake -S . -G Ninja -B build`
 
 - The auto-complete bridge, (run once per machine) (LazyVim can provide code completions)
 `ln -sf build/compile_commands.json .`
