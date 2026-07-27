@@ -18,6 +18,25 @@ add_executable(opengl-exe
   src/stb_image.cpp
 )
 
+# for macos cmake build
+if(APPLE)
+  find_package(OpenGL REQUIRED)
+  target_link_libraries(opengl-exe
+    PRIVATE
+      glfw 
+      Threads::Threads
+      OpenGL::GL
+  )
+else() 
+  target_link_libraries(opengl-exe 
+    PRIVATE 
+      glfw
+      Threads::Threads
+      dl
+  )
+endif()
+
+
 target_link_libraries(opengl-exe PRIVATE 
   glfw
   Threads::Threads
