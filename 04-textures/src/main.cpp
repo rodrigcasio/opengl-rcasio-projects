@@ -2,6 +2,8 @@
 #include <GLFW/glfw3.h>
 #include <iostream>
 #include "shader.h"
+#include "stb_image.h"
+
 // Textures CH
 const unsigned int SCR_WIDTH = 800;
 const unsigned int SCR_HEIGHT = 600;
@@ -31,6 +33,7 @@ int main () {
     return -1;
   }
   
+  /* Vertex data (vertices, color & texture coordinates)*/
   float vertices[] = {
     /* Positions */         /* Colors */  
     /* x     y      z       R      G     B   */
@@ -38,6 +41,12 @@ int main () {
     -0.5f, -0.5f, 0.0f,     0.0f, 1.0f, 0.0f,  // bottom left
      0.0f,  0.5f, 0.0f,     0.0f, 0.0f, 1.0f,  // top middle
   };
+
+  // float textCoords[] = {
+  //   0.0f, 0.0f, // lower left corner
+  //   1.0f, 0.0f, // lower right corner
+  //   1.0f, 1.0f // top center corner
+  // };
 
   Shader myShader("build/vertex-shader.glsl", "build/frag-shader.glsl");
 
@@ -61,7 +70,35 @@ int main () {
 
   glBindVertexArray(VAO); /* ---- UNBIND VAO ---- */
 
- 
+
+  /* texture config wrapping/filtering */
+  unsigned int texture; 
+  glGenTextures(1, &texture);
+
+  glBindTexture(GL_TEXTURE_2D, texture); /* --- TEXTURE BIND --- */
+  
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_MIRRORED_REPEAT); /* x axis */
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_MIRRORED_REPEAT); /* y axis */
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST_MIPMAP_NEAREST);
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+  
+  /* load & generate text */
+  int widthT, heightT, nrChannels;
+  unsigned char *data = stbi_load("build/container.jpg", &widthT, &heightT, &nrChannels, 0);
+
+  if (data) {
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, widthT, heightT, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
+    glGenerateMipmap(GL_TEXTURE_2D);
+  } else {
+    std::cout << "Failed to load texture" << std::endl;
+  }
+
+  stbi_image_free(data);
+
+
+
+
+
   /* render loop */
   while(!glfwWindowShouldClose(window)) {
     /* input */
