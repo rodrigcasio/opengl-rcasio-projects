@@ -15,6 +15,7 @@ add_executable(opengl-exe
   src/main.cpp
   src/glad.c
   src/shader.cpp
+  src/stb_image.cpp
 )
 
 target_link_libraries(opengl-exe PRIVATE 
@@ -34,3 +35,22 @@ configure_file(
   ${CMAKE_CURRENT_BINARY_DIR}/frag-shader.glsl
   COPYONLY
 )
+
+# loading images individually:
+configure_file(
+  ${CMAKE_CURRENT_SOURCE_DIR}/src/images/container.jpg
+  ${CMAKE_CURRENT_BINARY_DIR}/container.jpg
+)
+
+
+# # automatic way to grab everything in images/ dir automatically
+# # grab a list of all images inside the src/images dir
+# file(GLOB TEXTURE_FILES "${CMAKE_CURRENT_SOURCE_DIR}/src/images/*")
+#
+# # automatically loop through each image and copy it to the build/ dir
+# foreach(IMAGE_PATH ${TEXTURE_FILES})
+#   get_filename_component(IMAGE_NAME ${IMAGE_PATH} NAME)
+#   configure_file(${IMAGE_PATH} ${CMAKE_CURRENT_BINARY_DIR/${IMAGE_NAME} COPYONLY)
+# endforeach()
+
+
