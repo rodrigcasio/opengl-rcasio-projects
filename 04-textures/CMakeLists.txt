@@ -62,6 +62,11 @@ configure_file(
   COPYONLY
 )
 
+configure_file(
+  ${CMAKE_CURRENT_SOURCE_DIR}/src/images/awesomeface.png
+  ${CMAKE_CURRENT_BINARY_DIR}/awesomeface.png
+  COPYONLY
+)
 
 # # automatic way to grab everything in images/ dir automatically
 # # grab a list of all images inside the src/images dir
