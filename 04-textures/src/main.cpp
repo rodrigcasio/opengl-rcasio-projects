@@ -46,7 +46,7 @@ int main () {
     0.5f,  0.5f, 0.0f,      1.0f, 0.0f, 0.0f,   1.0f, 1.0f,   // top right  (0)
     0.5f, -0.5f, 0.0f,      0.0f, 1.0f, 0.0f,   1.0f, 0.0f,   // bottom right (1)
    -0.5f, -0.5f, 0.0f,      0.0f, 0.0f, 1.0f,   0.0f, 0.0f,   // bottom left  (2)
-   -0.5f,  0.5f, 0.0f,      1.0f, 1.0f, 1.0f,   0.0f, 1.0f,   // top left (3)
+   -0.5f,  0.5f, 0.0f,      1.0f, 1.0f, 0.0f,   0.0f, 1.0f,   // top left (3)
   };
 
   unsigned int indices[] = {
@@ -92,15 +92,15 @@ int main () {
 
   glBindVertexArray(VAO); /* ---- UNBIND VAO ---- */
 
+  /* texture objects */
+  unsigned int texture0, texture1; 
 
-  /* texture config wrapping/filtering */
-  unsigned int texture; 
-  glGenTextures(1, &texture);
-
-  glBindTexture(GL_TEXTURE_2D, texture); /* --- TEXTURE BIND --- */
+  /* texture0 config wrapping/filtering */
+  glGenTextures(1, &texture0);
+  glBindTexture(GL_TEXTURE_2D, texture0); /* no need to unbind */
   
   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_MIRRORED_REPEAT); /* x axis */
-  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_MIRRORED_REPEAT); /* y axis */
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_MIRRORED_REPEAT); /* y axis */
   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST_MIPMAP_NEAREST);
   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
   
@@ -114,8 +114,30 @@ int main () {
   } else {
     std::cout << "Failed to load texture" << std::endl;
   }
+  
+  /* texture1 config wrapping/filtering */
+  glGenTextures(1, &texture1);
+  glBindTexture(GL_TEXTURE_2D, texture1);  
 
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
+  data = stbi_load("build/awesomeface.png", &widthT,  &heightT, &nrChannels, 0);
+  if (data) {
+    /* awesomeface.png has transparency and thus alpha channel so we use GL_RGBA */
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, widthT, heightT, 0, GL_RGBA, GL_UNSIGNED_BYTE, data);
+    glGenerateMipmap(GL_TEXTURE_2D);
+  } else {
+    std::cout << "Failed to load texture" << std::endl;
+  }
   stbi_image_free(data);
+
+  /* setting uniform samplers */
+  myShader.use();
+  glUniform1i(glGetUniformLocation(myShader.ID, "texSampler0"), 0);   // setting it manually texture unit 0
+  myShader.setInt("texSampler1", 1);  // same thing but using .setInt() Shader method
 
   /* render loop */
   while (!glfwWindowShouldClose(window)) {
@@ -129,8 +151,15 @@ int main () {
     /* Start program */
     myShader.use();
 
-    /* Draw rectangle */
-    glBindBuffer(GL_TEXTURE_2D, texture);
+    /* activating/binding textures */
+    /* texture0 */
+    glActiveTexture(GL_TEXTURE0);
+    glBindBuffer(GL_TEXTURE_2D, texture0);
+    /* texture0 */
+    glActiveTexture(GL_TEXTURE1);
+    glBindBuffer(GL_TEXTURE_2D, texture1);
+     
+    /* Draw rectangle (two triangles) */
     glBindVertexArray(VAO);
     glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 
