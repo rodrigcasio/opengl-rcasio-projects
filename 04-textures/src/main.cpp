@@ -106,7 +106,7 @@ int main () {
   
   /* load & generate text */
   int widthT, heightT, nrChannels;
-  stbi_set_flip_vertically_on_load(true);
+  stbi_set_flip_vertically_on_load(true); 
   unsigned char *data = stbi_load("build/container.jpg", &widthT, &heightT, &nrChannels, 0);
 
   if (data) {
@@ -115,6 +115,7 @@ int main () {
   } else {
     std::cout << "Failed to load texture" << std::endl;
   }
+  stbi_image_free(data);
   
   /* texture1 config wrapping/filtering */
   glGenTextures(1, &texture1);
@@ -128,7 +129,7 @@ int main () {
   data = stbi_load("build/awesomeface.png", &widthT,  &heightT, &nrChannels, 0);
   if (data) {
     /* awesomeface.png has transparency and thus alpha channel so we use GL_RGBA */
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, widthT, heightT, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, widthT, heightT, 0, GL_RGBA, GL_UNSIGNED_BYTE, data);
     glGenerateMipmap(GL_TEXTURE_2D);
   } else {
     std::cout << "Failed to load texture" << std::endl;
@@ -138,8 +139,7 @@ int main () {
   /* setting uniform samplers */
   myShader.use();
   glUniform1i(glGetUniformLocation(myShader.ID, "texSampler0"), 0);   // setting it manually texture unit 0
-  myShader.setInt("texSampler1", 1);  // same thing but using .setInt() Shader method
-
+  myShader.setInt("texSampler1", 1);  // or with our method .setInt() from shader.h
   /* render loop */
   while (!glfwWindowShouldClose(window)) {
     /* input */
@@ -150,15 +150,16 @@ int main () {
     glClear(GL_COLOR_BUFFER_BIT);
 
     /* activating/binding textures */
-    /* texture0 */
+    /* texture0  BINDTEXTURE() */
     glActiveTexture(GL_TEXTURE0);
-    glBindBuffer(GL_TEXTURE_2D, texture0);
+    glBindTexture(GL_TEXTURE_2D, texture0);
     /* texture0 */
     glActiveTexture(GL_TEXTURE1);
-    glBindBuffer(GL_TEXTURE_2D, texture1);
+    glBindTexture(GL_TEXTURE_2D, texture1);
      
     /* Start program */
     myShader.use();
+
     /* Draw rectangle (two triangles) */
     glBindVertexArray(VAO);
     glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
