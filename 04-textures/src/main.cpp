@@ -90,7 +90,7 @@ int main () {
 
   glBindBuffer(GL_ARRAY_BUFFER, 0);
 
-  glBindVertexArray(VAO); /* ---- UNBIND VAO ---- */
+  glBindVertexArray(0); /* ---- UNBIND VAO ---- */
 
   /* texture objects */
   unsigned int texture0, texture1; 
@@ -101,11 +101,12 @@ int main () {
   
   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_MIRRORED_REPEAT); /* x axis */
   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_MIRRORED_REPEAT); /* y axis */
-  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST_MIPMAP_NEAREST);
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
   
   /* load & generate text */
   int widthT, heightT, nrChannels;
+  stbi_set_flip_vertically_on_load(true);
   unsigned char *data = stbi_load("build/container.jpg", &widthT, &heightT, &nrChannels, 0);
 
   if (data) {
@@ -119,15 +120,15 @@ int main () {
   glGenTextures(1, &texture1);
   glBindTexture(GL_TEXTURE_2D, texture1);  
 
-  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_MIRRORED_REPEAT);
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_MIRRORED_REPEAT);
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
   data = stbi_load("build/awesomeface.png", &widthT,  &heightT, &nrChannels, 0);
   if (data) {
     /* awesomeface.png has transparency and thus alpha channel so we use GL_RGBA */
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, widthT, heightT, 0, GL_RGBA, GL_UNSIGNED_BYTE, data);
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, widthT, heightT, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
     glGenerateMipmap(GL_TEXTURE_2D);
   } else {
     std::cout << "Failed to load texture" << std::endl;
@@ -148,9 +149,6 @@ int main () {
     glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT);
 
-    /* Start program */
-    myShader.use();
-
     /* activating/binding textures */
     /* texture0 */
     glActiveTexture(GL_TEXTURE0);
@@ -159,6 +157,8 @@ int main () {
     glActiveTexture(GL_TEXTURE1);
     glBindBuffer(GL_TEXTURE_2D, texture1);
      
+    /* Start program */
+    myShader.use();
     /* Draw rectangle (two triangles) */
     glBindVertexArray(VAO);
     glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
