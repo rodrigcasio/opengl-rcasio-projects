@@ -5,7 +5,7 @@ layout (location = 1) in vec3 aColor;
 layout (location = 2) in vec2 aTexCoord;
 
 out vec3 ourColor;
-out vec2 texCoord;
+out vec2 TexCoord;
 // out vec3 ourPosition;
 
 // uniform float xOffset;   // add more value (0.3f set up in main()) to aPos.x
@@ -13,6 +13,6 @@ out vec2 texCoord;
 void main () {
   gl_Position = vec4(aPos, 1.0); 
   ourColor = aColor;
-  texCoord = aTexCoord;
+  TexCoord = vec2(aTexCoord);
   // ourPosition = aPos;
 }
