@@ -40,7 +40,40 @@ int main () {
     return 1;
   }
 
+  /* vertex data */
+  float vertices[] = {
+    // two triangles drawn (rectangle)
 
+    /* Positions */         /* Colors */        /* texture coords */
+    /* x     y    z */    /* R      G     B */  /*S    T */
+    0.5f,  0.5f, 0.0f,      1.0f, 0.0f, 0.0f,   1.0f, 1.0f,   // top right  (0)
+    0.5f, -0.5f, 0.0f,      0.0f, 1.0f, 0.0f,   1.0f, 0.0f,   // bottom right (1)
+   -0.5f, -0.5f, 0.0f,      0.0f, 0.0f, 1.0f,   0.0f, 0.0f,   // bottom left  (2)
+   -0.5f,  0.5f, 0.0f,      1.0f, 1.0f, 0.0f,   0.0f, 1.0f,   // top left (3)
+  };
+
+  unsigned int indices[] = {
+    0, 1, 3,
+    1, 2, 3,
+  };
+
+  Shader myShader("build/vertex-shader.glsl", "build/frag-shader.glsl");
+
+  /* buffer config VBO & VAO */
+  unsigned int VBO, VAO;
+  glGenVertexArrays(1, &VAO);
+  glGenBuffers(1, &VBO);
+  
+  unsigned int EBO;
+  glGenBuffers(1, &EBO);
+
+  glBindVertexArray(VAO); /* -- BOUND VAO*/
+
+  glBindBuffer(GL_ARRAY_BUFFER, VBO);
+  glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+    
+  glBindBuffer();
+  
 
 
   /* render loop */
