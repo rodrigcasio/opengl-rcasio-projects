@@ -99,6 +99,7 @@ int main () {
   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
   
   int widthT, heightT, nrChannels;
+  stbi_set_flip_vertically_on_load(true);
   unsigned char *data = stbi_load("build/container.jpg", &widthT, &heightT, &nrChannels, 0);
   
   if (data) {
@@ -138,7 +139,6 @@ int main () {
     /* input */ 
     processInput(window);
     
-
     /* window render */
     glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT);
@@ -146,7 +146,15 @@ int main () {
     /* start program */
     myShader.use();
 
+    /* Activate & bind  Textures */
+    glActiveTexture(GL_TEXTURE0);
+    glBindTexture(GL_TEXTURE_2D, texture0);
+    glActiveTexture(GL_TEXTURE1);
+    glBindTexture(GL_TEXTURE_2D, texture1);
 
+    /* draw triagnles */
+    glBindVertexArray(VAO);
+    glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 
     glfwSwapBuffers(window);
     glfwPollEvents();
