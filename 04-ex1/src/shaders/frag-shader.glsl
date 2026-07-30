@@ -15,7 +15,7 @@ void main () {
   /* mix resulting tex color with the vertex color */
   // FragColor = texture(texSampler0, TexCoord) * vec4(ourColor, 1.0);   
 
-  /* combination of two texture outputs */
+  /* combination of two texture outputs inverting x axis */
   FragColor = mix(texture(texSampler0, TexCoord), texture(texSampler1, vec2(1.0 - TexCoord.s, TexCoord.t)), 0.2);  
 }
 
