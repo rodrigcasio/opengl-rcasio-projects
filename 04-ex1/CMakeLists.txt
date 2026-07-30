@@ -41,11 +41,13 @@ endif()
 configure_file(
   ${CMAKE_CURRENT_SOURCE_DIR}/src/shaders/vertex-shader.glsl
   ${CMAKE_CURRENT_BINARY_DIR}/vertex-shader.glsl
+  COPYONLY
 )
 
 configure_file(
   ${CMAKE_CURRENT_SOURCE_DIR}/src/shaders/frag-shader.glsl
   ${CMAKE_CURRENT_BINARY_DIR}/frag-shader.glsl
+  COPYONLY
 )
 
 # loading images individually:
