@@ -44,10 +44,10 @@ int main () {
     // two triangles drawn (rectangle)
     /* Positions */         /* Colors */        /* texture coords */
     /* x     y    z */    /* R      G     B */  /*S    T */
-    0.5f,  0.5f, 0.0f,      1.0f, 0.0f, 0.0f,   1.0f, 1.0f,   // top right  (0)
-    0.5f, -0.5f, 0.0f,      0.0f, 1.0f, 0.0f,   1.0f, 0.0f,   // bottom right (1)
+    0.5f,  0.5f, 0.0f,      1.0f, 0.0f, 0.0f,   2.0f, 2.0f,   // top right  (0)
+    0.5f, -0.5f, 0.0f,      0.0f, 1.0f, 0.0f,   2.0f, 0.0f,   // bottom right (1)
    -0.5f, -0.5f, 0.0f,      0.0f, 0.0f, 1.0f,   0.0f, 0.0f,   // bottom left  (2)
-   -0.5f,  0.5f, 0.0f,      1.0f, 1.0f, 0.0f,   0.0f, 1.0f,   // top left (3)
+   -0.5f,  0.5f, 0.0f,      0.0f, 0.0f, 0.0f,   0.0f, 2.0f,   // top left (3)
   };
 
   unsigned int indices[] = {
@@ -93,8 +93,8 @@ int main () {
   glGenTextures(1, &texture0);
   glBindTexture(GL_TEXTURE_2D, texture0);
   
-  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_MIRRORED_REPEAT);
-  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_MIRRORED_REPEAT);
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST_MIPMAP_NEAREST);
   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
