@@ -25,9 +25,9 @@ if (APPLE)
   target_link_libraries(
     opengl-exe
     PRIVATE
-      glfw::OpenGL
+      glfw
       Threads::Threads
-      OpenGL::
+      OpenGL::GL
   )
 else()
   target_link_libraries(
