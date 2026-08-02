@@ -1,5 +1,5 @@
 # exercise 3 CH textures
-cmake_required_minimum(VERSION 3.15)
+cmake_minimum_required(VERSION 3.15)
 
 project(texturesEx3 VERSION 1.0 LANGUAGES CXX C)
 
@@ -61,7 +61,7 @@ configure_file(
 
 configure_file(
   ${CMAKE_CURRENT_SOURCE_DIR}/src/images/awesomeface.png
-  ${CMAKE_CURREN_BINDARY_DIR}/awesomeface.png
+  ${CMAKE_CURRENT_BINARY_DIR}/awesomeface.png
   COPYONLY
 )
 
