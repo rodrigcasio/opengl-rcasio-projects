@@ -81,24 +81,24 @@ int main () {
   glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*) (6 * sizeof(float)));
   glEnableVertexAttribArray(2);
 
+  glBindBuffer(GL_ARRAY_BUFFER, 0);
   
+  glBindVertexArray(0); /* -- UNBIND VAO -- */
+
   /* textures */
   unsigned int texture0, texture1;
 
-  glGenTextures(1, &texture0);
-  glGenTextures(1, &texture1);
-  
   /* texture0 w/f/g/l */
+  glGenTextures(1, &texture0);
   glBindTexture(GL_TEXTURE_2D, texture0);
   
-  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_MIRRORED_REPEAT);
-  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_MIRRORED_REPEAT);
-
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST_MIPMAP_NEAREST);
-  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
   
-  int widthT, heightT, nrChannerls;
-  unsigned char *data = stbi_load("build/container.jpg", &widthT, &heightT, &nrChannerls, 0);
+  int widthT, heightT, nrChannels;
+  unsigned char *data = stbi_load("build/container.jpg", &widthT, &heightT, &nrChannels, 0);
   
   if (data) {
     glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, widthT, heightT, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
@@ -109,18 +109,20 @@ int main () {
   stbi_image_free(data);
 
   /* texture1 w/f/g/l */
+  glGenTextures(1, &texture1);
   glBindTexture(GL_TEXTURE_2D, texture1);
   
   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_MIRRORED_REPEAT);
-  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_MIRRORED_REPEAT);
-  
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_MIRRORED_REPEAT); 
   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST_MIPMAP_NEAREST);
-  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
-  data = stbi_load("build/awesomeface.png", &widthT, &heightT, &nrChannerls, 0);
+  data = stbi_load("build/awesomeface.png", &widthT, &heightT, &nrChannels, 0);
   if (data) {
     glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, widthT, heightT, 0, GL_RGBA, GL_UNSIGNED_BYTE, data);
     glGenerateMipmap(GL_TEXTURE_2D);
+  } else {
+    std::cout << "Failed to load texture" << std::endl;
   }
   stbi_image_free(data);
 
@@ -150,6 +152,7 @@ int main () {
     glBindTexture(GL_TEXTURE_2D, texture1);
 
     /* Draw triangles */
+    glBindVertexArray(VAO);
     glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
     
     glfwSwapBuffers(window);
