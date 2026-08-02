@@ -57,19 +57,108 @@ int main () {
 
   Shader myShader("build/vertex-shader.glsl", "build/frag-shader.glsl");
 
+  /* Buffers */
+  unsigned int VBO, VAO, EBO;
+  glGenVertexArrays(1, &VBO);
+  glGenBuffers(1, &VAO);
+    
+  glGenBuffers(1, &EBO);
+  
+  glBindVertexArray(VAO); /* -- BIND VAO -- */
+  
+  glBindBuffer(GL_ARRAY_BUFFER, VBO);
+  glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+  
+  glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
+  glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
+  
+  glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)0);
+  glEnableVertexAttribArray(0);
+
+  glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*) (3 * sizeof(float)));
+  glEnableVertexAttribArray(1);
+  
+  glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*) (6 * sizeof(float)));
+  glEnableVertexAttribArray(2);
+
+  
+  /* textures */
+  unsigned int texture0, texture1;
+
+  glGenTextures(1, &texture0);
+  glGenTextures(1, &texture1);
+  
+  /* texture0 w/f/g/l */
+  glBindTexture(GL_TEXTURE_2D, texture0);
+  
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_MIRRORED_REPEAT);
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_MIRRORED_REPEAT);
+
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST_MIPMAP_NEAREST);
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+  
+  int widthT, heightT, nrChannerls;
+  unsigned char *data = stbi_load("build/container.jpg", &widthT, &heightT, &nrChannerls, 0);
+  
+  if (data) {
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, widthT, heightT, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
+    glGenerateMipmap(GL_TEXTURE_2D);
+  } else {
+    std::cout << "Failed to load texture" << std::endl;
+  }
+  stbi_image_free(data);
+
+  /* texture1 w/f/g/l */
+  glBindTexture(GL_TEXTURE_2D, texture1);
+  
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_MIRRORED_REPEAT);
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_MIRRORED_REPEAT);
+  
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST_MIPMAP_NEAREST);
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+
+  data = stbi_load("build/awesomeface.png", &widthT, &heightT, &nrChannerls, 0);
+  if (data) {
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, widthT, heightT, 0, GL_RGBA, GL_UNSIGNED_BYTE, data);
+    glGenerateMipmap(GL_TEXTURE_2D);
+  }
+  stbi_image_free(data);
+
+  
+  /* texture units */
+  myShader.use();
+  glUniform1i(glGetUniformLocation(myShader.ID, "texSampler0"), 0);
+  myShader.setInt("texSampler1", 1);
+
+
   while (!glfwWindowShouldClose(window)) {
     /* input */
     processInput(window);
 
-      
     /* window */
     glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT);
+
+    /* start program */
+    myShader.use();
+
+    /* load/Activate textures with texture units */
+    glActiveTexture(GL_TEXTURE0);
+    glBindTexture(GL_TEXTURE_2D, texture0);
+
+    glActiveTexture(GL_TEXTURE1);
+    glBindTexture(GL_TEXTURE_2D, texture1);
+
+    /* Draw triangles */
+    glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
     
     glfwSwapBuffers(window);
     glfwPollEvents();
   }
   
+  glDeleteVertexArrays(1, &VAO);
+  glDeleteBuffers(1, &VBO);
+  glDeleteBuffers(1, &EBO);
 
   glfwTerminate();
 
