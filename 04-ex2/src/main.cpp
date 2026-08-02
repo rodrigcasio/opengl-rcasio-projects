@@ -42,7 +42,7 @@ int main () {
   
   float vertices[] = {
     // two triangles drawn (rectangle)
-    /* Positions */         /* Colors */        /* texture coords */
+    /* Positions */         /* Colors */        /* texture coords zooming out textures to see wrapping methods */
     /* x     y    z */    /* R      G     B */  /*S    T */
     0.5f,  0.5f, 0.0f,      1.0f, 0.0f, 0.0f,   2.0f, 2.0f,   // top right  (0)
     0.5f, -0.5f, 0.0f,      0.0f, 1.0f, 0.0f,   2.0f, 0.0f,   // bottom right (1)
