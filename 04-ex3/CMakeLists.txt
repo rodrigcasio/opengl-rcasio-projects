@@ -55,7 +55,7 @@ configure_file(
 
 configure_file(
   ${CMAKE_CURRENT_SOURCE_DIR}/src/images/container.jpg
-  ${CMAKE_CURRENT_BINARY_DIR}/container.glsl
+  ${CMAKE_CURRENT_BINARY_DIR}/container.jpg
   COPYONLY
 )
 
