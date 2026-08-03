@@ -7,11 +7,11 @@
 
 const unsigned int SCR_WIDTH = 800;
 const unsigned int SCR_HEIGHT = 600;
+float MIX_VALUE = 0.0f;
 
 void frameBufferSizeCallback(GLFWwindow *window, int width, int height);
 void processInput(GLFWwindow *window);
-// void mixTexUniformF(GLFWwindow* window, Shader program, float size);
-float mixTexUniformF(GLFWwindow* window);
+// void mixTexUniformF(GLFWwindow* window);
 
 int main () {
 
@@ -157,8 +157,8 @@ int main () {
     glActiveTexture(GL_TEXTURE1);
     glBindTexture(GL_TEXTURE_2D, texture1);
     
-    // mixTexUniformF(window, myShader, 0.0f);
-    myShader.setFloat("thirdArg", mixTexUniformF(window));
+    // set up uniform value for mix()
+    myShader.setFloat("mixThirdArg", MIX_VALUE);
 
     /* Draw triangles */
     glBindVertexArray(VAO);
@@ -186,26 +186,40 @@ void processInput(GLFWwindow *window) {
   if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS) {
     glfwSetWindowShouldClose(window, 1);
   }
-}
-
-float mixTexUniformF(GLFWwindow* window) {
-  float size = 0.0f;
+  
+  // process input for 
   if (glfwGetKey(window, GLFW_KEY_UP) == GLFW_PRESS) {
-    size += 0.1f;
+    MIX_VALUE += 0.01f;
+    if (MIX_VALUE >= 1.0f) MIX_VALUE = 1.0f;
 
   } else if (glfwGetKey(window, GLFW_KEY_DOWN) == GLFW_PRESS) {
-    size -= 0.1f;
+    MIX_VALUE -= 0.01f;
+    if (MIX_VALUE <= 0.0f) MIX_VALUE = 0.0f;
   }
-  
-  return size;
 }
 
-// void mixTexUniformF(GLFWwindow* window, Shader program, float size) {
-//   if (glfwGetKey(window, GLFW_KEY_UP) == GLFW_PRESS) {
-//     size += 0.1f;
-//   } else if (glfwGetKey(window, GLFW_KEY_DOWN) == GLFW_PRESS) {
-//     size -= 0.1f;
-//   } 
+/*
+// first approaches to complete exercise 4
+// process the input within a different function
 //
-//   program.setFloat("thirdArg", size);
-// }
+void mixTexUniformF(GLFWwindow* window) {
+  if (glfwGetKey(window, GLFW_KEY_UP) == GLFW_PRESS) {
+    MIX_VALUE += 0.01f;
+    if (MIX_VALUE >= 1.0f) MIX_VALUE = 1.0f;
+
+  } else if (glfwGetKey(window, GLFW_KEY_DOWN) == GLFW_PRESS) {
+    MIX_VALUE -= 0.01f;
+    if (MIX_VALUE <= 0.0f) MIX_VALUE = 0.0f;
+  }
+}
+
+void mixTexUniformF(GLFWwindow* window, Shader program, float size) {
+  program.setFloat("thirdArg", size);
+
+  if (glfwGetKey(window, GLFW_KEY_UP) == GLFW_PRESS) {
+    program.setFloat("thirdArg", size += 0.1f);
+  } else if (glfwGetKey(window, GLFW_KEY_DOWN) == GLFW_PRESS) {
+    program.setFloat("thirdArg", size -= 0.1f);
+  } 
+}
+*/
