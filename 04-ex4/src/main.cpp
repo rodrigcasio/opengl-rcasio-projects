@@ -44,10 +44,10 @@ int main () {
     // two triangles drawn (rectangle)
     /* Positions */         /* Colors */        /* texture coords */
     /* x     y    z */    /* R      G     B */  /*S    T */
-    0.5f,  0.5f, 0.0f,      1.0f, 0.0f, 0.0f,   0.55f, 0.55f,   // top right  (0)
-    0.5f, -0.5f, 0.0f,      0.0f, 1.0f, 0.0f,   0.55f, 0.45f,   // bottom right (1)
-   -0.5f, -0.5f, 0.0f,      0.0f, 0.0f, 1.0f,   0.45f, 0.45f,   // bottom left  (2)
-   -0.5f,  0.5f, 0.0f,      0.0f, 0.0f, 0.0f,   0.45f, 0.55f,   // top left (3)
+    0.5f,  0.5f, 0.0f,      1.0f, 0.0f, 0.0f,   1.0f, 1.0f,   // top right  (0)
+    0.5f, -0.5f, 0.0f,      0.0f, 1.0f, 0.0f,   1.0f, 0.0f,   // bottom right (1)
+   -0.5f, -0.5f, 0.0f,      0.0f, 0.0f, 1.0f,   0.0f, 0.0f,   // bottom left  (2)
+   -0.5f,  0.5f, 0.0f,      0.0f, 0.0f, 0.0f,   0.0f, 1.0f,   // top left (3)
   };
 
   unsigned int indices[] = {
@@ -132,6 +132,9 @@ int main () {
   myShader.use();
   glUniform1i(glGetUniformLocation(myShader.ID, "texSampler0"), 0);
   myShader.setInt("texSampler1", 1);
+
+  /* uniform for third parameter of mix()*/
+  glUniform1f(glGetUniformLocation(myShader.ID, "thirdArg"), 0.4);
 
 
   while (!glfwWindowShouldClose(window)) {
