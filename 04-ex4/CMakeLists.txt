@@ -1,5 +1,5 @@
 #exercise 4 CH textures
-cmake_minimum_required(VERSION 1.0)
+cmake_minimum_required(VERSION 3.15)
 
 project(textureEx4 VERSION 1.0 LANGUAGES CXX C)
 
