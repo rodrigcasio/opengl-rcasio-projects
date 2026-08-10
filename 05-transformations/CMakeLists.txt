@@ -22,7 +22,7 @@ add_executable(
 
 if (APPLE)
   find_package(OpenGL REQUIRED)
-  target_libraries(
+  target_link_libraries(
     opengl-exe
       PRIVATE
         glfw
@@ -31,7 +31,7 @@ if (APPLE)
         glm::glm
   )
 else()
-  target_libraries(
+  target_link_libraries(
     opengl-exe
       PRIVATE
         glfw
