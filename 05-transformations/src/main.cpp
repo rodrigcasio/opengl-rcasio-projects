@@ -1,5 +1,6 @@
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
+#include <glm/ext/vector_float4.hpp>
 #include <iostream>
 #include "shader.h"
 #include "stb_image.h"
@@ -137,7 +138,21 @@ int main () {
   glUniform1i(glGetUniformLocation(myShader.ID, "texSampler0"), 0);  // manual version to assign unit tex
   myShader.setInt("texSampler1", 1);
 
+  
+  // glm ---
+  // translating a vector
+  glm::vec4 vec(1.0f, 0.0f, 0.0f, 1.0f);
+  glm::mat4 identityMatrix = glm::mat4(1.0f);
 
+  glm::mat4 transMatrix;
+  transMatrix = glm::translate(identityMatrix, glm::vec3(1.0f, 1.0f, 0.0f));
+
+  vec = transMatrix * vec;
+  std::cout << vec.x << vec.y << vec.z << std::endl;
+
+
+  // scale and rotate the container
+  
 
 
   // render
