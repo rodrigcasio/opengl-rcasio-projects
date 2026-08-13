@@ -1,6 +1,7 @@
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 #include <glm/ext/vector_float4.hpp>
+#include <glm/trigonometric.hpp>
 #include <iostream>
 #include "shader.h"
 #include "stb_image.h"
@@ -141,18 +142,23 @@ int main () {
   
   // glm ---
   // translating a vector
-  glm::vec4 vec(1.0f, 0.0f, 0.0f, 1.0f);
-  glm::mat4 identityMatrix = glm::mat4(1.0f);
-
-  glm::mat4 transMatrix;
-  transMatrix = glm::translate(identityMatrix, glm::vec3(1.0f, 1.0f, 0.0f));
-
-  vec = transMatrix * vec;
-  std::cout << vec.x << vec.y << vec.z << std::endl;
+  // glm::vec4 vec(1.0f, 0.0f, 0.0f, 1.0f);
+  // glm::mat4 identityMatrix = glm::mat4(1.0f);
+  //
+  // glm::mat4 transMatrix;
+  // transMatrix = glm::translate(identityMatrix, glm::vec3(1.0f, 1.0f, 0.0f));
+  //
+  // vec = transMatrix * vec;
+  // std::cout << vec.x << vec.y << vec.z << std::endl;
 
 
   // scale and rotate the container
+  glm::mat4 trans = glm::mat4(1.0f);
+  trans = glm::scale(trans, glm::vec3(0.5, 0.5, 0.5));
+  trans = glm::rotate(trans, glm::radians(90.0f), glm::vec3(0.0, 0.0, 1.0));
+  // trans becomes a transformation matrix that combines all the transformations
   
+
 
 
   // render
