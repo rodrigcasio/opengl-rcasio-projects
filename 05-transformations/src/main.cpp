@@ -3,6 +3,11 @@
 #include <iostream>
 #include "shader.h"
 #include "stb_image.h"
+
+#include <glm/glm.hpp>
+#include <glm/matrix.hpp>
+#include <glm/gtc/type_ptr.hpp>
+
 // CH 5: Transformations
 
 const unsigned int SCR_WIDTH = 800;
@@ -131,6 +136,9 @@ int main () {
   myShader.use();
   glUniform1i(glGetUniformLocation(myShader.ID, "texSampler0"), 0);  // manual version to assign unit tex
   myShader.setInt("texSampler1", 1);
+
+
+
 
   // render
   while (!glfwWindowShouldClose(window)) {
