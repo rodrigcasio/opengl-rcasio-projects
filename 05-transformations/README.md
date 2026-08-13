@@ -55,6 +55,10 @@ void main () {
 
 2. Rotate the container over time, and reposition the container at the bottom-right side of the window. `To rotate the container over time we have to update the transformation matrix in the render loop becuase it needs to update each frame`
 
+- IMPORTANT for gl::translate() ::rotate()
+
+-`"Remember that the actual transformation order should be read in reverse: even though in code we first translate and then later rotate, the actual transformations first apply a rotation and then a translation." learnopengl`
+
 - within the render loop. `vertex-shader.glsl` stays with same config
 ```cpp
 
