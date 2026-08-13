@@ -1,8 +1,15 @@
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
+#include <glm/ext/vector_float4.hpp>
+#include <glm/trigonometric.hpp>
 #include <iostream>
 #include "shader.h"
 #include "stb_image.h"
+
+#include <glm/glm.hpp>
+#include <glm/matrix.hpp>
+#include <glm/gtc/type_ptr.hpp>
+
 // CH 5: Transformations
 
 const unsigned int SCR_WIDTH = 800;
@@ -132,6 +139,29 @@ int main () {
   glUniform1i(glGetUniformLocation(myShader.ID, "texSampler0"), 0);  // manual version to assign unit tex
   myShader.setInt("texSampler1", 1);
 
+  
+  // glm ---
+  // translating a vector
+  // glm::vec4 vec(1.0f, 0.0f, 0.0f, 1.0f);
+  // glm::mat4 identityMatrix = glm::mat4(1.0f);
+  //
+  // glm::mat4 transMatrix;
+  // transMatrix = glm::translate(identityMatrix, glm::vec3(1.0f, 1.0f, 0.0f));
+  //
+  // vec = transMatrix * vec;
+  // std::cout << vec.x << vec.y << vec.z << std::endl;
+
+
+  // scale and rotate the container
+  // glm::mat4 trans = glm::mat4(1.0f);
+  // // trans becomes a transformation matrix that combines all the transformations
+  // trans = glm::scale(trans, glm::vec3(0.5, 0.5, 0.5));
+  // trans = glm::rotate(trans, glm::radians(90.0f), glm::vec3(0.0, 0.0, 1.0));
+  //
+  // // pass the transformation matrix to shader
+  // unsigned int transformLoc = glGetUniformLocation(myShader.ID, "transform");
+  // glUniformMatrix4fv(transformLoc, 1, GL_FALSE, glm::value_ptr(trans));
+
   // render
   while (!glfwWindowShouldClose(window)) {
     // input
@@ -159,6 +189,15 @@ int main () {
     glBindVertexArray(VAO);
     glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
     
+    // transformation matrix rotating container overtime
+    glm::mat4 trans = glm::mat4(1.0f);
+    trans = glm::translate(trans, glm::vec3(0.5f, -0.5f, 0.0f));
+    trans = glm::rotate(trans, (float)glfwGetTime(), glm::vec3(0.0f, 0.0f, 1.0f));
+    
+    // pass the transformation matrix to shader
+    unsigned int transformLoc = glGetUniformLocation(myShader.ID, "transform");
+    glUniformMatrix4fv(transformLoc, 1, GL_FALSE, glm::value_ptr(trans));
+
     glfwSwapBuffers(window);
     glfwPollEvents();
   }
