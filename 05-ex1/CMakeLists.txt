@@ -1,5 +1,5 @@
 # exercise 1 CH transformations
-cmake_minimum_requried(VERSION 3.15)
+cmake_minimum_required(VERSION 3.15)
 
 project(TransEx1 VERSION 1.0 LANGUAGES CXX C)
 
@@ -12,7 +12,7 @@ find_package(glfw3 REQUIRED)
 find_package(Threads REQUIRED)
 find_package(glm REQUIRED)
 
-add_executables(
+add_executable(
   opengl-exe
     src/main.cpp
     src/glad.c
