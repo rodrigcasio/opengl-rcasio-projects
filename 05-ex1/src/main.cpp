@@ -9,6 +9,8 @@
 #include <glm/gtc/type_ptr.hpp>
 #include <glm/ext/vector_float4.hpp>
 
+// exercise 1 CH: transformations
+
 const unsigned int SCR_WIDTH = 800;
 const unsigned int SCR_HEIGHT = 600;
 float MIX_VAL = 0.0f;
