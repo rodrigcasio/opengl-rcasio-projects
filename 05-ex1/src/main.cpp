@@ -7,9 +7,11 @@
 #include <glm/glm.hpp>
 #include <glm/matrix.hpp>
 #include <glm/gtc/type_ptr.hpp>
+#include <glm/ext/vector_float4.hpp>
 
 const unsigned int SCR_WIDTH = 800;
 const unsigned int SCR_HEIGHT = 600;
+float MIX_VAL = 0.0f;
 
 void frameBufferSizeCallback(GLFWwindow* window, int width, int height);
 void processInput(GLFWwindow* window);
@@ -130,8 +132,8 @@ int main () {
   stbi_image_free(data);
   
   myShader.use(); 
-  glUniform1f(glGetUniformLocation(myShader.ID, "texSampler0"), 0);
-  glUniform1f(glGetUniformLocation(myShader.ID, "texSampler1"), 1);
+  glUniform1i(glGetUniformLocation(myShader.ID, "texSampler0"), 0);
+  glUniform1i(glGetUniformLocation(myShader.ID, "texSampler1"), 1);
 
 
   while(!glfwWindowShouldClose(window)) {
@@ -152,10 +154,22 @@ int main () {
     glActiveTexture(GL_TEXTURE1);
     glBindTexture(GL_TEXTURE_2D, tex1);
 
+    // mixThirdArg (frag-shader.glsl)
+    glUniform1f(glGetUniformLocation(myShader.ID, "mixThirdArg"), MIX_VAL);
+
     // draw triangles
     glBindVertexArray(VAO);
     glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
-
+    
+    
+    // transformations
+    glm::mat4 trans = glm::mat4(1.0f);
+    trans = glm::rotate(trans, (float)glfwGetTime(), glm::vec3(0.0f, 0.0f, 1.0f));
+    trans = glm::translate(trans, glm::vec3(0.5f, -0.5f, 0.0f));
+    
+    // transform (vertex-shader.glsl)
+    unsigned int transformLoc = glGetUniformLocation(myShader.ID, "transform");
+    glUniformMatrix4fv(transformLoc, 1, GL_FALSE, glm::value_ptr(trans));
     
     glfwSwapBuffers(window);
     glfwPollEvents();
@@ -176,8 +190,15 @@ void frameBufferSizeCallback(GLFWwindow* window, int width, int height) {
 
 void processInput(GLFWwindow* window) {
   if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS) {
-    glfwSetWindowShouldClose(window, 1);
-    
-    
+    glfwSetWindowShouldClose(window, 1);   
+  }
+
+  if (glfwGetKey(window, GLFW_KEY_UP) == GLFW_PRESS) {
+    MIX_VAL += 0.01f;
+    if (MIX_VAL >= 1.0f) MIX_VAL = 1.0f;
+
+  } else if (glfwGetKey(window, GLFW_KEY_DOWN) == GLFW_PRESS) {
+    MIX_VAL -= 0.01f;
+    if (MIX_VAL <= 0.0f) MIX_VAL = 0.0f;
   }
 }
