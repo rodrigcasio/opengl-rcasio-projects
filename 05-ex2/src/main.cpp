@@ -58,7 +58,7 @@ int main () {
    -0.5f,  0.5f, 0.0f,      0.0f, 0.0f, 0.0f,   0.0f, 1.0f,   // top left (3)
   };
 
-  unsigned int indices[] {
+  unsigned int indices[] = {
     0, 1, 3,
     1, 2, 3,
   };
@@ -76,7 +76,7 @@ int main () {
   glBindVertexArray(VAO); // bind VAO
 
   glBindBuffer(GL_ARRAY_BUFFER, VBO);
-  glBufferData(GL_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
+  glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
   
   glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
   glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
@@ -163,6 +163,4 @@ void processInput(GLFWwindow *window) {
   if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS) {
     glfwSetWindowShouldClose(window, 1);
   }
-
-
 }
