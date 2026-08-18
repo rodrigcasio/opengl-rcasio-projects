@@ -1,4 +1,4 @@
-// CH-5: Transformations
+// exercise 2 CH-5: Transformations
 # version 330 core
 out vec4 FragColor;
 
