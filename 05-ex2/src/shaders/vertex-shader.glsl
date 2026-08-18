@@ -1,4 +1,4 @@
-// CH-5: Transformations
+// exercise 2 CH-5: Transformations
 # version 330 core
 layout (location = 0) in vec3 aPos;
 layout (location = 1) in vec3 aColor;
@@ -10,10 +10,11 @@ out vec2 TexCoord;
 
 // uniform float xOffset;   // add more value (0.3f set up in main()) to aPos.x
 
-uniform mat4 transform;
+// uniform mat4 transform;
 
 void main () {
-  gl_Position = transform * vec4(aPos, 1.0); 
+  // gl_Position = transform * vec4(aPos, 1.0); 
+  gl_Position = vec4(aPos, 1.0);
   ourColor = aColor;
   TexCoord = vec2(aTexCoord);
   // ourPosition = aPos;
