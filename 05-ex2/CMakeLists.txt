@@ -1,5 +1,5 @@
 # exercise 2 CH transformations
-cmake_required_minimum(VERSION 3.15)
+cmake_minimum_required(VERSION 3.15)
 project(TransEx2 VERSION 1.0 LANGUAGES CXX C)
 
 set(CMAKE_CXX_STANDARD 17)
