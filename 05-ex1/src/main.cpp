@@ -13,8 +13,8 @@ const unsigned int SCR_WIDTH = 800;
 const unsigned int SCR_HEIGHT = 600;
 float MIX_VAL = 0.0f;
 
-void frameBufferSizeCallback(GLFWwindow* window, int width, int height);
-void processInput(GLFWwindow* window);
+void frameBufferSizeCallback(GLFWwindow *window, int width, int height);
+void processInput(GLFWwindow *window);
 
 int main () {
 
@@ -184,11 +184,11 @@ int main () {
 }
 
 
-void frameBufferSizeCallback(GLFWwindow* window, int width, int height) {
+void frameBufferSizeCallback(GLFWwindow *window, int width, int height) {
   glViewport(0, 0, width, height);
 }
 
-void processInput(GLFWwindow* window) {
+void processInput(GLFWwindow *window) {
   if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS) {
     glfwSetWindowShouldClose(window, 1);   
   }
