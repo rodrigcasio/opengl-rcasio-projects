@@ -8,14 +8,12 @@
 #include <glm/matrix.hpp>
 #include <glm/gtc/type_ptr.hpp>
 #include <glm/ext/vector_float4.hpp>
+// exercise 2 CH: Transformations
 
-// exercise 1 CH: transformations
+unsigned int SCR_WIDTH = 800;
+unsigned int SCR_HEIGHT = 600;
 
-const unsigned int SCR_WIDTH = 800;
-const unsigned int SCR_HEIGHT = 600;
-float MIX_VAL = 0.0f;
-
-void frameBufferSizeCallback(GLFWwindow *window, int width, int height);
+void __frameSizeCallback(GLFWwindow *window, int width, int height);
 void processInput(GLFWwindow *window);
 
 int main () {
@@ -25,28 +23,32 @@ int main () {
   glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
   glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
-  
-#ifdef __APPLE__
-  glfwWindowHint(GLFW_OPENGL_COMPAT_PROFILE, GL_TRUE);
-#endif // __APPLE__
-  
-  GLFWwindow* window = glfwCreateWindow(SCR_WIDTH, SCR_HEIGHT, "Exercise 1:CH:transformations", NULL, NULL);
-  if (window == NULL) {
-    std::cout << "Failed to load GLFW window" << std::endl;
 
+#ifdef __APPLE
+  glfwWindowHint(GLFW_OPENGL_COMPACT_PROFILE, GL_TRUE);
+#endif // __APPLE
+
+  GLFWwindow *window = glfwCreateWindow(SCR_WIDTH, SCR_HEIGHT, "Exercise 2:CH Transformations", NULL, NULL);
+
+  if (window == NULL) {
+    std::cout << "Failed to load GLFW Window" << std::endl;
     glfwTerminate();
+
     return 1;
   }
   
   glfwMakeContextCurrent(window);
-  glfwSetFramebufferSizeCallback(window, frameBufferSizeCallback);
+  glfwSetFramebufferSizeCallback(window, __frameSizeCallback);
+  
 
   if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress)) {
     std::cout << "Failed to load GLAD" << std::endl;
+
     return 1;
   }
 
-  float vertices[] = {
+  // vertex data
+  float vertices[] {
     // two triangles drawn (rectangle)
     /* Positions */         /* Colors */        /* texture coords */
     /* x     y    z */    /* R      G     B */  /*S    T */
@@ -61,16 +63,18 @@ int main () {
     1, 2, 3,
   };
 
+  // load shaders, program
   Shader myShader("build/vertex-shader.glsl", "build/frag-shader.glsl");
-  
-  // buffers conf
-  unsigned int VBO, VAO, EBO;
-  glGenBuffers(1, &VBO);
+
+  // buffers 
+  unsigned int VBO, EBO, VAO;
+
   glGenVertexArrays(1, &VAO);
+  glGenBuffers(1, &VBO);
   glGenBuffers(1, &EBO);
-  
-  glBindVertexArray(VAO); // -- bind VAO
-  
+
+  glBindVertexArray(VAO); // bind VAO
+
   glBindBuffer(GL_ARRAY_BUFFER, VBO);
   glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
   
@@ -87,21 +91,21 @@ int main () {
   glEnableVertexAttribArray(2);
 
   glBindBuffer(GL_ARRAY_BUFFER, 0);
-
+  
   glBindVertexArray(0); // unbind VAO
-   
-  // texture conf
+  
+  // textures conf
   unsigned int tex0, tex1;
   
   // tex0
   glGenTextures(1, &tex0);
   glBindTexture(GL_TEXTURE_2D, tex0);
-  
+
   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_MIRRORED_REPEAT);
   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_MIRRORED_REPEAT);
   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-  
+
   int widthT, heightT, nrChannels;
   stbi_set_flip_vertically_on_load(true);
   unsigned char *data = stbi_load("build/container.jpg", &widthT, &heightT, &nrChannels, 0);
@@ -113,94 +117,50 @@ int main () {
     std::cout << "Failed to load texture" << std::endl;
   }
   stbi_image_free(data);
+  
 
-  // tex1
-  glGenTextures(1, &tex1);
-  glBindTexture(GL_TEXTURE_2D, tex1);
-  
-  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_MIRRORED_REPEAT);
-  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_MIRRORED_REPEAT);
-  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-
-  data = stbi_load("build/awesomeface.png", &widthT, &heightT, &nrChannels, 0);
-  
-  if (data) {
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, widthT, heightT, 0, GL_RGBA, GL_UNSIGNED_BYTE, data);
-    glGenerateMipmap(GL_TEXTURE_2D);
-  } else {
-    std::cout << "Failed to load texture" << std::endl;
-  }
-  stbi_image_free(data);
-  
+  // texture units
   myShader.use(); 
   glUniform1i(glGetUniformLocation(myShader.ID, "texSampler0"), 0);
-  glUniform1i(glGetUniformLocation(myShader.ID, "texSampler1"), 1);
 
-
-  while(!glfwWindowShouldClose(window)) {
+  while (!glfwWindowShouldClose(window)) {
     // input
     processInput(window);
-    
-    // window
+
+    // window 
     glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT);
 
     // program
     myShader.use();
 
-    // textures
+    // textures 
     glActiveTexture(GL_TEXTURE0);
     glBindTexture(GL_TEXTURE_2D, tex0);
     
-    glActiveTexture(GL_TEXTURE1);
-    glBindTexture(GL_TEXTURE_2D, tex1);
-
-    // mixThirdArg (frag-shader.glsl)
-    glUniform1f(glGetUniformLocation(myShader.ID, "mixThirdArg"), MIX_VAL);
-
     // draw triangles
     glBindVertexArray(VAO);
-    glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+    glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_BYTE, 0);
     
-    
-    // transformations
-    glm::mat4 trans = glm::mat4(1.0f);
-    trans = glm::rotate(trans, (float)glfwGetTime(), glm::vec3(0.0f, 0.0f, 1.0f));
-    trans = glm::translate(trans, glm::vec3(0.5f, -0.5f, 0.0f));
-    
-    // transform (vertex-shader.glsl)
-    unsigned int transformLoc = glGetUniformLocation(myShader.ID, "transform");
-    glUniformMatrix4fv(transformLoc, 1, GL_FALSE, glm::value_ptr(trans));
-    
+
     glfwSwapBuffers(window);
     glfwPollEvents();
   }
   
   glDeleteVertexArrays(1, &VAO);
   glDeleteBuffers(1, &VBO);
-  glDeleteBuffers(1, &EBO);
+  glDeleteBuffers(1, &VAO);
 
   glfwTerminate();
   return 0;
 }
 
-
-void frameBufferSizeCallback(GLFWwindow *window, int width, int height) {
+void __frameSizeCallback(GLFWwindow *window, int width, int height) {
   glViewport(0, 0, width, height);
 }
 
 void processInput(GLFWwindow *window) {
   if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS) {
-    glfwSetWindowShouldClose(window, 1);   
-  }
-
-  if (glfwGetKey(window, GLFW_KEY_UP) == GLFW_PRESS) {
-    MIX_VAL += 0.01f;
-    if (MIX_VAL >= 1.0f) MIX_VAL = 1.0f;
-
-  } else if (glfwGetKey(window, GLFW_KEY_DOWN) == GLFW_PRESS) {
-    MIX_VAL -= 0.01f;
-    if (MIX_VAL <= 0.0f) MIX_VAL = 0.0f;
+    glfwSetWindowShouldClose(window, 1);
   }
 }
