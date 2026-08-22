@@ -12,6 +12,7 @@
 
 unsigned int SCR_WIDTH = 800;
 unsigned int SCR_HEIGHT = 600;
+float MIX_VAL = 0.0f;
 
 void __frameSizeCallback(GLFWwindow *window, int width, int height);
 void processInput(GLFWwindow *window);
@@ -52,10 +53,10 @@ int main () {
     // two triangles drawn (rectangle)
     /* Positions */         /* Colors */        /* texture coords */
     /* x     y    z */    /* R      G     B */  /*S    T */
-    0.5f,  0.5f, 0.0f,      1.0f, 0.0f, 0.0f,   1.0f, 1.0f,   // top right  (0)
-    0.5f, -0.5f, 0.0f,      0.0f, 1.0f, 0.0f,   1.0f, 0.0f,   // bottom right (1)
+    0.5f,  0.5f, 0.0f,      1.0f, 0.0f, 0.0f,   2.0f, 2.0f,   // top right  (0)
+    0.5f, -0.5f, 0.0f,      0.0f, 1.0f, 0.0f,   2.0f, 0.0f,   // bottom right (1)
    -0.5f, -0.5f, 0.0f,      0.0f, 0.0f, 1.0f,   0.0f, 0.0f,   // bottom left  (2)
-   -0.5f,  0.5f, 0.0f,      0.0f, 0.0f, 0.0f,   0.0f, 1.0f,   // top left (3)
+   -0.5f,  0.5f, 0.0f,      0.0f, 0.0f, 0.0f,   0.0f, 2.0f,   // top left (3)
   };
 
   unsigned int indices[] = {
@@ -101,8 +102,8 @@ int main () {
   glGenTextures(1, &tex0);
   glBindTexture(GL_TEXTURE_2D, tex0);
 
-  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_MIRRORED_REPEAT);
-  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_MIRRORED_REPEAT);
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
@@ -118,11 +119,42 @@ int main () {
   }
   stbi_image_free(data);
   
+  // tex1
+  glGenTextures(1, &tex1);
+  glBindTexture(GL_TEXTURE_2D, tex1);
+
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
+  data = stbi_load("build/awesomeface.png", &widthT, &heightT, &nrChannels, 0);
+
+  if (data) {
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, widthT, heightT, 0, GL_RGBA, GL_UNSIGNED_BYTE, data);
+    glGenerateMipmap(GL_TEXTURE_2D);
+  } else {
+    std::cout << "Failed to load texture" << std::endl;
+  }
+  stbi_image_free(data);
 
   // texture units
   myShader.use(); 
   glUniform1i(glGetUniformLocation(myShader.ID, "texSampler0"), 0);
+  glUniform1i(glGetUniformLocation(myShader.ID, "texSampler1"), 1);
 
+  // example 2 transformations (rotating and scaling twice as small)
+  /*
+  glm::mat4 trans = glm::mat4(1.0f);
+  trans = glm::rotate(trans, glm::radians(90.0f), glm::vec3(0.0, 0.0, 1.0));
+  trans = glm::scale(trans, glm::vec3(0.5, 0.5, 0.5));
+
+  unsigned int transformLoc = glGetUniformLocation(myShader.ID, "uTransform");
+  glUniformMatrix4fv(transformLoc, 1, GL_FALSE, glm::value_ptr(trans));
+
+  */
+
+  // render loop
   while (!glfwWindowShouldClose(window)) {
     // input
     processInput(window);
@@ -138,9 +170,23 @@ int main () {
     glActiveTexture(GL_TEXTURE0);
     glBindTexture(GL_TEXTURE_2D, tex0);
     
+    glActiveTexture(GL_TEXTURE1);
+    glBindTexture(GL_TEXTURE_2D, tex1);
+
+    // uniform MIX_VAL 
+    glUniform1f(glGetUniformLocation(myShader.ID, "uMixThirdArg"), MIX_VAL);
+
+    // Transformations
+    glm::mat4 trans2 = glm::mat4(1.0f);
+    trans2 = glm::translate(trans2, glm::vec3(0.5f, 0.5f, 0.0f));
+    trans2 = glm::rotate(trans2, (float)glfwGetTime(), glm::vec3(0.0f, 0.0f, 1.0f));
+  
+    GLint transformLoc = glGetUniformLocation(myShader.ID, "uTransform");
+    glUniformMatrix4fv(transformLoc, 1, GL_FALSE, glm::value_ptr(trans2));
+
     // draw triangles
     glBindVertexArray(VAO);
-    glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_BYTE, 0);
+    glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
     
 
     glfwSwapBuffers(window);
@@ -162,5 +208,15 @@ void __frameSizeCallback(GLFWwindow *window, int width, int height) {
 void processInput(GLFWwindow *window) {
   if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS) {
     glfwSetWindowShouldClose(window, 1);
+  }
+
+  if (glfwGetKey(window, GLFW_KEY_UP) == GLFW_PRESS) {
+    MIX_VAL += 0.01f;
+    if (MIX_VAL >= 1.0f) MIX_VAL = 1.0f;
+
+  } else if (glfwGetKey(window, GLFW_KEY_DOWN) == GLFW_PRESS) {
+    MIX_VAL -= 0.01f;
+    if (MIX_VAL <= 0.0f) MIX_VAL = 0.0f;
+
   }
 }
