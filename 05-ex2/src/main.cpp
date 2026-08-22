@@ -143,7 +143,8 @@ int main () {
   glUniform1i(glGetUniformLocation(myShader.ID, "texSampler0"), 0);
   glUniform1i(glGetUniformLocation(myShader.ID, "texSampler1"), 1);
 
-  // transformations
+  // example 2 transformations (rotating and scaling twice as small)
+  /*
   glm::mat4 trans = glm::mat4(1.0f);
   trans = glm::rotate(trans, glm::radians(90.0f), glm::vec3(0.0, 0.0, 1.0));
   trans = glm::scale(trans, glm::vec3(0.5, 0.5, 0.5));
@@ -151,6 +152,7 @@ int main () {
   unsigned int transformLoc = glGetUniformLocation(myShader.ID, "uTransform");
   glUniformMatrix4fv(transformLoc, 1, GL_FALSE, glm::value_ptr(trans));
 
+  */
 
   // render loop
   while (!glfwWindowShouldClose(window)) {
@@ -175,6 +177,12 @@ int main () {
     glUniform1f(glGetUniformLocation(myShader.ID, "uMixThirdArg"), MIX_VAL);
 
     // Transformations
+    glm::mat4 trans2 = glm::mat4(1.0f);
+    trans2 = glm::translate(trans2, glm::vec3(0.5f, 0.5f, 0.0f));
+    trans2 = glm::rotate(trans2, (float)glfwGetTime(), glm::vec3(0.0f, 0.0f, 1.0f));
+  
+    GLint transformLoc = glGetUniformLocation(myShader.ID, "uTransform");
+    glUniformMatrix4fv(transformLoc, 1, GL_FALSE, glm::value_ptr(trans2));
 
     // draw triangles
     glBindVertexArray(VAO);
