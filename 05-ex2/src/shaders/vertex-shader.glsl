@@ -10,11 +10,11 @@ out vec2 TexCoord;
 
 // uniform float xOffset;   // add more value (0.3f set up in main()) to aPos.x
 
-// uniform mat4 transform;
+uniform mat4 uTransform;
 
 void main () {
-  // gl_Position = transform * vec4(aPos, 1.0); 
-  gl_Position = vec4(aPos, 1.0);
+  // gl_Position = vec4(aPos, 1.0);
+  gl_Position = uTransform * vec4(aPos, 1.0f); 
   ourColor = aColor;
   TexCoord = vec2(aTexCoord);
   // ourPosition = aPos;
