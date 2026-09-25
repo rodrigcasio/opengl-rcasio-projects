@@ -13,7 +13,9 @@
 `./build/opengl-exe` launching OpenGL application
 
 
-### Directory Structure
+#### Directory Structure
+```
+Directory structure:
 └── rodrigcasio-opengl-rcasio-projects/
     ├── README.md
     ├── 01-creating-a-window/
@@ -205,3 +207,4 @@
             └── shaders/
                 ├── frag-shader.glsl
                 └── vertex-shader.glsl
+```
