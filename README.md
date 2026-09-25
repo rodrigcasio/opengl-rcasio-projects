@@ -13,59 +13,198 @@
 `./build/opengl-exe` launching OpenGL application
 
 
-### Directory Structure
-
-
+#### Directory Structure
+```
 Directory structure:
-└── rodrigcasio-nvchad-rodrig-config/
+└── rodrigcasio-opengl-rcasio-projects/
     ├── README.md
-    ├── arch-checkups-cmds.md
-    ├── init.lua
-    ├── lazy-lock.json
-    ├── LICENSE
-    ├── .stylua.toml
-    ├── archWSL-tmux-alacritty-settings/
-    │   ├── alacritty.toml
-    │   ├── aur_packages.txt
-    │   ├── installed-packages.txt
-    │   ├── pacman_packages.txt
-    │   ├── .tmux.conf
-    │   └── .vimrc
-    ├── bashrc-file-arch/
-    │   └── .bashrc
-    ├── kali-linux-alacritty-zshrc-config/
-    │   └── .zshrc
-    ├── linux-tmux-alacritty-vim-conf/
-    │   ├── alacritty.toml
-    │   ├── .tmux.conf
-    │   ├── .vimrc
-    │   └── minimal-tmux-config/
-    │       ├── README.md
-    │       └── .tmux.conf
-    ├── lua/
-    │   ├── autocmds.lua
-    │   ├── chadrc.lua
-    │   ├── mappings.lua
-    │   ├── options.lua
-    │   ├── configs/
-    │   │   ├── conform.lua
-    │   │   ├── lazy.lua
-    │   │   └── lspconfig.lua
-    │   └── plugins/
-    │       └── init.lua
-    ├── macOS-tmux-vim-conf/
-    │   ├── .tmux.conf
-    │   ├── .vimrc
-    │   └── minimal-tmux-config/
-    │       └── .tmux.conf
-    ├── packages_installed_arch/
-    │   ├── full_system_snapshot_april-2026.txt
-    │   ├── how-to-install-everything.txt
-    │   ├── pacman_packages_2026.txt
-    │   └── yay_packages_2026.txt
-    ├── packgs-installed-Arch/
-    │   ├── aur-list.txt
-    │   ├── master-backup.txt
-    │   └── pacman-list.txt
-    └── zshrc-file-mac/
-        └── .zshrc
+    ├── 01-creating-a-window/
+    │   ├── CMakeLists.txt
+    │   └── src/
+    │       └── main.cpp
+    ├── 02-ex1/
+    │   ├── README.md
+    │   ├── CMakeLists.txt
+    │   └── src/
+    │       ├── fragment-shader.glsl
+    │       ├── main.cpp
+    │       └── vertex-shader.glsl
+    ├── 02-ex2/
+    │   ├── README.md
+    │   ├── CMakeLists.txt
+    │   └── src/
+    │       ├── fragment-shader.glsl
+    │       ├── main.cpp
+    │       └── vertex-shader.glsl
+    ├── 02-ex3/
+    │   ├── README.md
+    │   ├── CMakeLists.txt
+    │   └── src/
+    │       ├── fragm-s-01.glsl
+    │       ├── fragm-s-02.glsl
+    │       ├── main.cpp
+    │       └── vertex-shader.glsl
+    ├── 02-hello-triangle/
+    │   ├── README.md
+    │   ├── CMakeLists.txt
+    │   └── src/
+    │       ├── fragment-shader.glsl
+    │       ├── main.cpp
+    │       └── vertex-shader.glsl
+    ├── 03-ex1/
+    │   ├── README.md
+    │   ├── CMakeLists.txt
+    │   ├── include/
+    │   │   └── shader.h
+    │   └── src/
+    │       ├── main.cpp
+    │       ├── shader.cpp
+    │       └── shaders/
+    │           ├── frag-shader.glsl
+    │           └── vertex-shader.glsl
+    ├── 03-ex2/
+    │   ├── README.md
+    │   ├── CMakeLists.txt
+    │   ├── include/
+    │   │   └── shader.h
+    │   └── src/
+    │       ├── main.cpp
+    │       ├── shader.cpp
+    │       └── shaders/
+    │           ├── frag-shader.glsl
+    │           └── vertex-shader.glsl
+    ├── 03-ex3/
+    │   ├── README.md
+    │   ├── CMakeLists.txt
+    │   ├── include/
+    │   │   └── shader.h
+    │   └── src/
+    │       ├── main.cpp
+    │       ├── shader.cpp
+    │       └── shaders/
+    │           ├── frag-shader.glsl
+    │           └── vertex-shader.glsl
+    ├── 03-shaders/
+    │   ├── README.md
+    │   ├── CMakeLists.txt
+    │   ├── include/
+    │   │   └── shader.h
+    │   └── src/
+    │       ├── main.cpp
+    │       ├── shader.cpp
+    │       └── shaders/
+    │           ├── frag-shader.glsl
+    │           └── vertex-shader.glsl
+    ├── 04-ex1/
+    │   ├── README.md
+    │   ├── CMakeLists.txt
+    │   ├── include/
+    │   │   ├── shader.h
+    │   │   └── KHR/
+    │   │       └── khrplatform.h
+    │   └── src/
+    │       ├── main.cpp
+    │       ├── shader.cpp
+    │       ├── stb_image.cpp
+    │       └── shaders/
+    │           ├── frag-shader.glsl
+    │           └── vertex-shader.glsl
+    ├── 04-ex2/
+    │   ├── README.md
+    │   ├── CMakeLists.txt
+    │   ├── include/
+    │   │   ├── shader.h
+    │   │   └── KHR/
+    │   │       └── khrplatform.h
+    │   └── src/
+    │       ├── main.cpp
+    │       ├── shader.cpp
+    │       ├── stb_image.cpp
+    │       └── shaders/
+    │           ├── frag-shader.glsl
+    │           └── vertex-shader.glsl
+    ├── 04-ex3/
+    │   ├── README.md
+    │   ├── CMakeLists.txt
+    │   ├── include/
+    │   │   ├── shader.h
+    │   │   └── KHR/
+    │   │       └── khrplatform.h
+    │   └── src/
+    │       ├── main.cpp
+    │       ├── shader.cpp
+    │       ├── stb_image.cpp
+    │       └── shaders/
+    │           ├── frag-shader.glsl
+    │           └── vertex-shader.glsl
+    ├── 04-ex4/
+    │   ├── README.md
+    │   ├── CMakeLists.txt
+    │   ├── include/
+    │   │   ├── shader.h
+    │   │   └── KHR/
+    │   │       └── khrplatform.h
+    │   └── src/
+    │       ├── main.cpp
+    │       ├── shader.cpp
+    │       ├── stb_image.cpp
+    │       └── shaders/
+    │           ├── frag-shader.glsl
+    │           └── vertex-shader.glsl
+    ├── 04-textures/
+    │   ├── README.md
+    │   ├── CMakeLists.txt
+    │   ├── include/
+    │   │   ├── shader.h
+    │   │   └── KHR/
+    │   │       └── khrplatform.h
+    │   └── src/
+    │       ├── main.cpp
+    │       ├── shader.cpp
+    │       ├── stb_image.cpp
+    │       └── shaders/
+    │           ├── frag-shader.glsl
+    │           └── vertex-shader.glsl
+    ├── 05-ex1/
+    │   ├── README.md
+    │   ├── CMakeLists.txt
+    │   ├── include/
+    │   │   ├── shader.h
+    │   │   └── KHR/
+    │   │       └── khrplatform.h
+    │   └── src/
+    │       ├── main.cpp
+    │       ├── shader.cpp
+    │       ├── stb_image.cpp
+    │       └── shaders/
+    │           ├── frag-shader.glsl
+    │           └── vertex-shader.glsl
+    ├── 05-ex2/
+    │   ├── README.md
+    │   ├── CMakeLists.txt
+    │   ├── include/
+    │   │   ├── shader.h
+    │   │   └── KHR/
+    │   │       └── khrplatform.h
+    │   └── src/
+    │       ├── main.cpp
+    │       ├── shader.cpp
+    │       ├── stb_image.cpp
+    │       └── shaders/
+    │           ├── frag-shader.glsl
+    │           └── vertex-shader.glsl
+    └── 05-transformations/
+        ├── README.md
+        ├── CMakeLists.txt
+        ├── include/
+        │   ├── shader.h
+        │   └── KHR/
+        │       └── khrplatform.h
+        └── src/
+            ├── main.cpp
+            ├── shader.cpp
+            ├── stb_image.cpp
+            └── shaders/
+                ├── frag-shader.glsl
+                └── vertex-shader.glsl
+```
